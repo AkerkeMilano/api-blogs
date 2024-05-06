@@ -1,33 +1,19 @@
-import {InputVideoType} from '../src/db/video-db-type'
-// import {Resolutions} from '../src/input-output-types/video-types'
-import {DBType} from '../src/db/db'
-
-export enum Resolutions {
-    P144 = "P144",
-    P240 = "P240",
-    P360 = "P360",
-    P480 = "P480",
-    P720 = "P720",
-    P1080 = "P1080",
-    P1440 = "P1440",
-    P2160  = "P2160"
+import { BlogType } from '../src/db/dbBlogs'
+import { DBType } from '../src/db/dbBlogs'
+const blog1: BlogType = {
+    id: "t54t555",
+    name: "About IT and AI",
+    description: "This blogs tells about new skills required",
+    websiteUrl: "https://blog.logrocket.com/"
 }
 
-export const video1: InputVideoType = {
-    id: 655,
-    title: 't' + Date.now() + Math.random(),
-    author: 'a' + Date.now() + Math.random(),
-    canBeDownloaded: true,
-    minAgeRestriction: null,
-    createdAt: new Date().toISOString(),
-    publicationDate: new Date((new Date().setDate(new Date().getDate() + 1))).toISOString(),
-    availableResolutions: [Resolutions.P240],
+const blog2: BlogType = {
+    id: "998dff9",
+    name: "Fitness and sport",
+    description: "This blogs tells about activities for every day",
+    websiteUrl: "https://blog.logrocket.com/"
 }
- 
-// ...
- 
+
 export const dataset1: DBType = {
-    videos: [video1],
+    blogs: [blog1, blog2],
 }
- 
-// ...
