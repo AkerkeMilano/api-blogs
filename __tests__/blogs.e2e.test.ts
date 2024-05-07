@@ -1,6 +1,6 @@
 import { setDB } from "../src/db/dbBlogs";
 import { dataset1 } from "./datasets";
-import { HTTP_STATUSES, SETTINGS } from "../src/settings";
+import { ADMIN_AUTH, HTTP_STATUSES, SETTINGS } from "../src/settings";
 import { req } from "./test-helpers";
 
 describe('/blogs', () => {
@@ -15,12 +15,59 @@ describe('/blogs', () => {
     })
 
     it('should create a new blog post', async () => {
+        const buff = Buffer.from(ADMIN_AUTH, 'utf8')
+        const codedAuth = buff.toString('base64')
+
         const newBlog = {
             name: "About IT and AI",
             description: "This blog tells about new skills required",
             websiteUrl: "https://blog.logrocket.com/"
         }
-        const res = await req.post(SETTINGS.PATH.BLOGS).send(newBlog).expect(HTTP_STATUSES.CREATED_201)
+        const res = await req.post(SETTINGS.PATH.BLOGS).send(newBlog).set({'authorization': 'Basic ' + codedAuth}).expect(HTTP_STATUSES.CREATED_201)
+    })
+
+    it('should not create a new blog post with incorrect input', async () => {
+        const buff = Buffer.from(ADMIN_AUTH, 'utf8')
+        const codedAuth = buff.toString('base64')
+
+        const newBlog = {
+            name: 12,
+            description: "This blog tells about new skills required",
+            websiteUrl: "https://blog.logrocket.com/"
+        }
+        const res = await req.post(SETTINGS.PATH.BLOGS).send(newBlog).set({'authorization': 'Basic ' + codedAuth}).expect(HTTP_STATUSES.BAD_REQUEST_400)
+    })
+
+    it('should create since authorized', async () => {
+        const buff = Buffer.from(ADMIN_AUTH, 'utf8')
+        const codedAuth = buff.toString('base64')
+        const newBlog = {
+            name: 'New blog',
+            description: "This blog tells about new skills required",
+            websiteUrl: "https://blog.logrocket.com/"
+        }
+
+        const res = await req
+            .post(SETTINGS.PATH.BLOGS)
+            .send(newBlog)
+            .set({'authorization': 'Basic ' + codedAuth})
+            .expect(HTTP_STATUSES.CREATED_201)
+    })
+
+    it('should not create since unauthorized', async () => {
+        const buff = Buffer.from(ADMIN_AUTH, 'utf8')
+        const codedAuth = buff.toString('base64')
+        const newBlog = {
+            name: 'New blog',
+            description: "This blog tells about new skills required",
+            websiteUrl: "https://blog.logrocket.com/"
+        }
+
+        const res = await req
+            .post(SETTINGS.PATH.BLOGS)
+            .send(newBlog)
+            .set({'authorization': 'Basic ' + codedAuth + 'rgrg'})
+            .expect(HTTP_STATUSES.UNAUTHORIZED_401)
     })
 
     it('should find blog by id', async () => {
