@@ -7,10 +7,17 @@ const postNameInputValidator = body('name')
 .isString().withMessage('name should be string')
 .isLength({ max: 15}).withMessage('name is too long')
 .notEmpty()
+.custom(value => {
+    return /[a-z]/i.test(value)
+}).withMessage('name should contain letters')
 const postDescriptionValidator = body('description')
 .isString().withMessage('description should be string')
 .isLength({ max: 500}).withMessage('description is too long')
 .notEmpty()
+.custom(value => {
+    return /[a-z]/i.test(value)
+}).withMessage('description should contain letters')
+
 const postWebsiteUrlValidator = body('websiteUrl')
 .isString().withMessage('websiteUrl should be string')
 .isLength({ max: 100}).withMessage('website url is too long')

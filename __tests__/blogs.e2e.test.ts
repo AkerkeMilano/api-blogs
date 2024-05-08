@@ -34,7 +34,7 @@ describe('/blogs', () => {
         const codedAuth = buff.toString('base64')
 
         const newBlog = {
-            name: 12,
+            name: '        ',
             description: "This blog tells about new skills required",
             websiteUrl: "https://blog.logrocket.com/"
         }
