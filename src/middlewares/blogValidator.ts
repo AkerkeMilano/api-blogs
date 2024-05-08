@@ -24,8 +24,8 @@ const postWebsiteUrlValidator = body('websiteUrl')
 export const postInputValidators = [
     postNameInputValidator,
     postDescriptionValidator,
-    postWebsiteUrlValidator,
-    checkExact()
+    postWebsiteUrlValidator
+    //checkExact()
 ]
 
 export const inputCheckErrorsMiddleware = (req: Request, res: Response, next: NextFunction) => {
