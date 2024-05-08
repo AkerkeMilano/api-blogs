@@ -7,6 +7,7 @@ export const SETTINGS = {
     PORT: process.env.PORT || 5000,
     PATH: {
         BLOGS: '/blogs',
+        TESTING: '/testing/all-data'
     },
 }
 

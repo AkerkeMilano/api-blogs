@@ -4,6 +4,9 @@ import { ADMIN_AUTH, HTTP_STATUSES, SETTINGS } from "../src/settings";
 import { req } from "./test-helpers";
 
 describe('/blogs', () => {
+    beforeAll(async () => {
+        await req.delete('/testing/all-data')
+    })
     it('should get empty array', async () => {
         setDB()
         const res = await req
