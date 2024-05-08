@@ -1,9 +1,9 @@
 import { HTTP_STATUSES } from "../settings"
 import { Request, Response } from "express"
-import { db } from "../db/db"
+import { dbBlogs } from "../db/dbBlogs";
 
 export const deleteTestingController = (req: Request, res: Response): void => {
-    db.videos = [];
+    dbBlogs.blogs = [];
     res.status(HTTP_STATUSES.NO_CONTENT_204).json({
         message: 'All data is deleted'
     });
