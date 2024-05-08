@@ -1,6 +1,7 @@
 import {body, validationResult} from 'express-validator'
 import { Request, Response, NextFunction } from 'express'
 import { HTTP_STATUSES } from '../settings'
+import { checkExact } from 'express-validator'
 
 const postNameInputValidator = body('name')
 .isString().withMessage('name should be string')
@@ -19,25 +20,17 @@ const postWebsiteUrlValidator = body('websiteUrl')
 }).withMessage('website url does not match the template')
 .notEmpty()
 
+
 export const postInputValidators = [
     postNameInputValidator,
     postDescriptionValidator,
-    postWebsiteUrlValidator
+    postWebsiteUrlValidator,
+    checkExact()
 ]
 
 export const inputCheckErrorsMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const e = validationResult(req)
-    console.log("req---------", Object.keys(req.body))
-    Object.keys(req.body).map(field => {
-        if(!['name', 'description', 'websiteUrl'].find(f => f === field)){
-            res
-                .status(HTTP_STATUSES.BAD_REQUEST_400)
-                .json({
-                    message: "Incorrect input field"
-                    }
-                )
-        }
-    })
+ 
     if(!e.isEmpty()) {
         const eArray = e.array({onlyFirstError: true}) as { path: string, msg: string }[]
 
