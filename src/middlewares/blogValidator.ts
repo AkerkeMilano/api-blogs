@@ -5,9 +5,11 @@ import { HTTP_STATUSES } from '../settings'
 const postNameInputValidator = body('name')
 .isString().withMessage('name should be string')
 .isLength({ max: 15}).withMessage('name is too long')
+.notEmpty()
 const postDescriptionValidator = body('description')
 .isString().withMessage('description should be string')
 .isLength({ max: 500}).withMessage('description is too long')
+.notEmpty()
 const postWebsiteUrlValidator = body('websiteUrl')
 .isString().withMessage('websiteUrl should be string')
 .isLength({ max: 100}).withMessage('website url is too long')
@@ -15,7 +17,7 @@ const postWebsiteUrlValidator = body('websiteUrl')
     const pattern = new RegExp('^https://([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$')
     return pattern.test(value)
 }).withMessage('website url does not match the template')
-
+.notEmpty()
 
 export const postInputValidators = [
     postNameInputValidator,
@@ -25,14 +27,24 @@ export const postInputValidators = [
 
 export const inputCheckErrorsMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const e = validationResult(req)
-
+    console.log("req---------", Object.keys(req.body))
+    Object.keys(req.body).map(field => {
+        if(!['name', 'description', 'websiteUrl'].find(f => f === field)){
+            res
+                .status(HTTP_STATUSES.BAD_REQUEST_400)
+                .json({
+                    message: "Incorrect input field"
+                    }
+                )
+        }
+    })
     if(!e.isEmpty()) {
         const eArray = e.array({onlyFirstError: true}) as { path: string, msg: string }[]
 
         res
         .status(HTTP_STATUSES.BAD_REQUEST_400)
         .json({
-            errorMessages: eArray.map(x => ({
+            errorsMessages: eArray.map(x => ({
                 message: x.msg,
                 field: x.path
             }))
