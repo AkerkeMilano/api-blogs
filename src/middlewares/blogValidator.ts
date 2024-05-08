@@ -3,16 +3,18 @@ import { Request, Response, NextFunction } from 'express'
 import { HTTP_STATUSES } from '../settings'
 
 const postNameInputValidator = body('name')
-.isString().withMessage('name should be String')
-.isLength({ max: 15}).withMessage('name length should be less than 15')
-const postDescriptionValidator = body('description').isString()
-.isLength({ max: 500}).withMessage('description length should be less than 500')
-const postWebsiteUrlValidator = body('websiteUrl').isString()
-.isLength({ max: 100}).withMessage('websiteUrl length should be less than 100')
+.isString().withMessage('name should be string')
+.isLength({ max: 15}).withMessage('name is too long')
+const postDescriptionValidator = body('description')
+.isString().withMessage('description should be string')
+.isLength({ max: 500}).withMessage('description is too long')
+const postWebsiteUrlValidator = body('websiteUrl')
+.isString().withMessage('websiteUrl should be string')
+.isLength({ max: 100}).withMessage('website url is too long')
 .custom(value => {
     const pattern = new RegExp('^https://([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$')
     return pattern.test(value)
-}).withMessage('websiteUrl is not satisfied with rules')
+}).withMessage('website url does not match the template')
 
 
 export const postInputValidators = [
@@ -31,8 +33,8 @@ export const inputCheckErrorsMiddleware = (req: Request, res: Response, next: Ne
         .status(HTTP_STATUSES.BAD_REQUEST_400)
         .json({
             errorMessages: eArray.map(x => ({
-                field: x.path,
-                message: x.msg
+                message: x.msg,
+                field: x.path
             }))
 
         })
