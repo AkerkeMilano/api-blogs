@@ -20,7 +20,7 @@ describe('/blogs', () => {
     it('should create a new blog post', async () => {
         const buff = Buffer.from(ADMIN_AUTH, 'utf8')
         const codedAuth = buff.toString('base64')
-
+        console.log("codedAuth---------", codedAuth)
         const newBlog = {
             name: "About IT and AI",
             description: "This blog tells about new skills required",
@@ -94,12 +94,18 @@ describe('/blogs', () => {
             websiteUrl: "https://blog.logrocket.com/"
         }
 
-        const res = await req.put(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id).send(newBlog).expect(HTTP_STATUSES.NO_CONTENT_204)
+        const buff = Buffer.from(ADMIN_AUTH, 'utf8')
+        const codedAuth = buff.toString('base64')
+
+        const res = await req.put(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id).send(newBlog).set({'authorization': 'Basic ' + codedAuth}).expect(HTTP_STATUSES.NO_CONTENT_204)
 
     })
 
     it('should not update blog by invalid id', async () => {
         setDB(dataset1)
+
+        const buff = Buffer.from(ADMIN_AUTH, 'utf8')
+        const codedAuth = buff.toString('base64')
 
         const newBlog = {
             name: "updated blog",
@@ -107,12 +113,15 @@ describe('/blogs', () => {
             websiteUrl: "https://blog.logrocket.com/"
         }
 
-        const res = await req.put(SETTINGS.PATH.BLOGS + '/655').send(newBlog).expect(HTTP_STATUSES.NOT_FOUND_404)
+        const res = await req.put(SETTINGS.PATH.BLOGS + '/655').send(newBlog).set({'authorization': 'Basic ' + codedAuth}).expect(HTTP_STATUSES.NOT_FOUND_404)
     })
 
       it('should delete blog', async () => {
         setDB(dataset1)
 
-        const res = await req.delete(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id).expect(HTTP_STATUSES.NO_CONTENT_204)
+        const buff = Buffer.from(ADMIN_AUTH, 'utf8')
+        const codedAuth = buff.toString('base64')
+
+        const res = await req.delete(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id).set({'authorization': 'Basic ' + codedAuth}).expect(HTTP_STATUSES.NO_CONTENT_204)
     })
 })
