@@ -5,13 +5,20 @@ export type BlogType = {
     websiteUrl: string
 }
 
+export type FullPostType = {
+    id: string,
+    title: string,
+    shortDescription: string,
+    content: string,
+    blogId: string,
+    blogName: string | undefined
+}
 export type PostType = {
     id: string,
     title: string,
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: string
 }
 
 const blog1: BlogType = {
@@ -28,7 +35,7 @@ const blog2: BlogType = {
     websiteUrl: "https://blog.logrocket.com/"
 }
 
-const post1: PostType = {
+const post1: FullPostType = {
     id: "333r3r3",
     title: "Hello",
     shortDescription: "This is description of my state",
@@ -37,7 +44,7 @@ const post1: PostType = {
     blogName: "About IT and AI"
 }
 
-const post2: PostType = {
+const post2: FullPostType = {
     id: "bfhtr666",
     title: "Killsddf",
     shortDescription: "This is description of my gergr",
@@ -48,7 +55,7 @@ const post2: PostType = {
 
 export type DBType = {
     blogs: BlogType[],
-    posts: PostType[]
+    posts: FullPostType[]
 }
 
 export const db = {

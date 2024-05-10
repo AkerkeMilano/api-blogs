@@ -1,9 +1,9 @@
 import { BlogType } from '../src/db/db'
-import { PostType } from '../src/db/db'
+import { FullPostType } from '../src/db/db'
 
 type DBType = {
     blogs: BlogType[],
-    posts: PostType[]
+    posts: FullPostType[]
 }
 
 const blog1: BlogType = {
@@ -20,7 +20,7 @@ const blog2: BlogType = {
     websiteUrl: "https://blog.logrocket.com/"
 }
 
-const post1: PostType = {
+const post1: FullPostType = {
     id: "333r3r3",
     title: "Hello",
     shortDescription: "This is description of my state",
@@ -29,7 +29,7 @@ const post1: PostType = {
     blogName: "About IT and AI"
 }
 
-const post2: PostType = {
+const post2: FullPostType = {
     id: "bfhtr666",
     title: "Killsddf",
     shortDescription: "This is description of my gergr",
