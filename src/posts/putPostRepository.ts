@@ -9,7 +9,8 @@ export const putPostRepository = {
         if(post) {
             db.posts[postIndex] = {
                 ...input,
-                id: db.posts[postIndex].id
+                id: db.posts[postIndex].id,
+                
             }
         }
         

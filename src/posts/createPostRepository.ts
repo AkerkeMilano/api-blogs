@@ -1,11 +1,16 @@
 import { InputPostType, ErrorType } from "./types"
-import { db, PostType } from "../db/db"
+import { BlogType, db, PostType } from "../db/db"
+import { findPostController } from "./findPostController"
+import { postBlogsRepository } from "../blogs/postBlogsRepository"
 
 export const createPostRepository = {
     async create(input: InputPostType): Promise<PostType | ErrorType> {
+        const blog = db.blogs.find(blog => blog.id === input.blogId)
+        
         const newPost = {
             ...input,
-            id: Math.round(Date.now() + Math.random()).toString()
+            id: Math.round(Date.now() + Math.random()).toString(),
+            blogName: blog ? blog.name : ''
         }
 
         try {
