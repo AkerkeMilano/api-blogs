@@ -1,7 +1,8 @@
-import { dbBlogs } from "../db/dbBlogs"
+import { db } from "../db/db"
 
 export const deleteTestingRepository = {
     deleteAll() {
-        dbBlogs.blogs = []
+        db.blogs = []
+        db.posts = []
     }
 }

@@ -1,48 +1,71 @@
-import {InputVideoType, Resolutions} from './video-db-type'
- 
+export type BlogType = {
+    id: string,
+    name: string,
+    description: string,
+    websiteUrl: string
+}
+
+export type PostType = {
+    id: string,
+    title: string,
+    shortDescription: string,
+    content: string,
+    blogId: string,
+    blogName: string
+}
+
+const blog1: BlogType = {
+    id: "t54t555",
+    name: "About IT and AI",
+    description: "This blogs tells about new skills required",
+    websiteUrl: "https://blog.logrocket.com/"
+}
+
+const blog2: BlogType = {
+    id: "998dff9",
+    name: "Fitness and sport",
+    description: "This blogs tells about activities for every day",
+    websiteUrl: "https://blog.logrocket.com/"
+}
+
+const post1: PostType = {
+    id: "333r3r3",
+    title: "Hello",
+    shortDescription: "This is description of my state",
+    content: "About greeting",
+    blogId: "998dff9",
+    blogName: "About IT and AI"
+}
+
+const post2: PostType = {
+    id: "bfhtr666",
+    title: "Killsddf",
+    shortDescription: "This is description of my gergr",
+    content: "About greeting ferfer",
+    blogId: "t54t555",
+    blogName: "About IT and AI"
+}
+
 export type DBType = {
-    videos: InputVideoType[] // VideoDBType[]
-    // some: any[]
+    blogs: BlogType[],
+    posts: PostType[]
 }
 
-
-
-const video1: InputVideoType = {
-    id: Math.floor(Date.now() + Math.random()*10),
-    title: 't' + Date.now() + Math.random(),
-    author: 'a' + Date.now() + Math.random(),
-    canBeDownloaded: true,
-    minAgeRestriction: null,
-    createdAt: new Date().toISOString(),
-    publicationDate: new Date((new Date().setDate(new Date().getDate() + 1))).toISOString(),
-    availableResolutions: [Resolutions.P240],
+export const db = {
+    blogs: [blog1, blog2],
+    posts: [post1, post2]
 }
 
-const video2: InputVideoType = {
-    id: Math.floor(Date.now() + Math.random()*10),
-    title: 't' + Date.now() + Math.random(),
-    author: 'a' + Date.now() + Math.random(),
-    canBeDownloaded: true,
-    minAgeRestriction: null,
-    createdAt: new Date().toISOString(),
-    publicationDate: new Date((new Date().setDate(new Date().getDate() + 1))).toISOString(),
-    availableResolutions: [Resolutions.P480],
-}
- 
-// ...
- 
-export const db: DBType = {
-    videos: [video1, video2],
-    // some: []
-}
- 
 export const setDB = (dataset?: Partial<DBType>) => {
-    if (!dataset) {
-        db.videos = []
-        // db.some = []
+    if(!dataset) {
+        db.blogs = []
+        db.posts = []
         return
     }
- 
-    db.videos = dataset.videos || db.videos
-    // db.some = dataset.some || db.some
+    if(dataset.blogs){
+        db.blogs = dataset.blogs || db.blogs
+    } 
+    if(dataset.posts){
+        db.posts = dataset.posts || db.posts
+    }
 }

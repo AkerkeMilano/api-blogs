@@ -1,4 +1,4 @@
-import { dbBlogs, BlogType } from "../db/dbBlogs"
+import { db, BlogType } from "../db/db"
 import { InputBlogType, ErrorType } from "./types"
 
 export const postBlogsRepository = {
@@ -9,13 +9,13 @@ export const postBlogsRepository = {
         }
 
         try {
-            dbBlogs.blogs = [...dbBlogs.blogs, newBlog]
+            db.blogs = [...db.blogs, newBlog]
         } catch(e: any) {
             return { error: e.message}
         }
         return newBlog
     },
     async find(id: string){
-        return dbBlogs.blogs.find(blog => blog.id === id)
+        return db.blogs.find(blog => blog.id === id)
     }
 }

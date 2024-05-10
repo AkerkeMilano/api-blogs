@@ -1,4 +1,4 @@
-import { setDB } from "../src/db/dbBlogs";
+import { db, setDB } from "../src/db/db";
 import { dataset1 } from "./datasets";
 import { ADMIN_AUTH, HTTP_STATUSES, SETTINGS } from "../src/settings";
 import { req } from "./test-helpers";
@@ -12,15 +12,12 @@ describe('/blogs', () => {
         const res = await req
         .get(SETTINGS.PATH.BLOGS)
         .expect(HTTP_STATUSES.OK_200)
-
-        console.log("body---------", res.body)
         expect(res.body.length).toBe(0)
     })
 
     it('should create a new blog post', async () => {
         const buff = Buffer.from(ADMIN_AUTH, 'utf8')
         const codedAuth = buff.toString('base64')
-        console.log("codedAuth---------", codedAuth)
         const newBlog = {
             name: "About IT and AI",
             description: "This blog tells about new skills required",

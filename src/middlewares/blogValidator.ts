@@ -1,7 +1,6 @@
 import {body, validationResult} from 'express-validator'
 import { Request, Response, NextFunction } from 'express'
 import { HTTP_STATUSES } from '../settings'
-import { checkExact } from 'express-validator'
 
 const postNameInputValidator = body('name')
 .isString().withMessage('name should be string')
@@ -27,12 +26,21 @@ const postWebsiteUrlValidator = body('websiteUrl')
 }).withMessage('website url does not match the template')
 .notEmpty()
 
+// export const paramIdValidator = param('id').exists()
+// .custom(async (id) => {
+//     const blog = await postBlogsRepository.find(id)
+//     if(!blog) {
+//         throw new Error('no blog with current id')
+//     }
+//     return !!blog
+// })
+// .withMessage('no blog with current id')
+
 
 export const postInputValidators = [
     postNameInputValidator,
     postDescriptionValidator,
-    postWebsiteUrlValidator
-    //checkExact()
+    postWebsiteUrlValidator,
 ]
 
 export const inputCheckErrorsMiddleware = (req: Request, res: Response, next: NextFunction) => {

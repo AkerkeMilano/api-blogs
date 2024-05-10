@@ -7,12 +7,12 @@ import { deleteBlogsController } from './deleteBlogsController'
 
 import { inputCheckErrorsMiddleware, postInputValidators } from '../middlewares/blogValidator'
 import { authMiddleware } from '../middlewares/authBlogMiddleware'
-
+// import { paramIdValidator } from '../middlewares/blogValidator'
 export const blogsRouter = Router()
  
 blogsRouter.get('/', getBlogsController)
 blogsRouter.post('/', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, postBlogsController)
-blogsRouter.get('/:id',findBlogsController )
+blogsRouter.get('/:id', findBlogsController )
 blogsRouter.put('/:id', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, updateBlogsController)
 blogsRouter.delete('/:id', authMiddleware, deleteBlogsController)
 
