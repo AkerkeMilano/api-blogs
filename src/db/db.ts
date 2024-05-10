@@ -11,6 +11,7 @@ export type PostType = {
     shortDescription: string,
     content: string,
     blogId: string,
+    blogName: string
 }
 
 const blog1: BlogType = {
@@ -33,6 +34,7 @@ const post1: PostType = {
     shortDescription: "This is description of my state",
     content: "About greeting",
     blogId: "998dff9",
+    blogName: "About IT and AI"
 }
 
 const post2: PostType = {
@@ -41,6 +43,7 @@ const post2: PostType = {
     shortDescription: "This is description of my gergr",
     content: "About greeting ferfer",
     blogId: "t54t555",
+    blogName: "About IT and AI"
 }
 
 export type DBType = {

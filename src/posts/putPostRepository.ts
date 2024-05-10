@@ -1,5 +1,5 @@
-import { db, BlogType } from "../db/db"
-import { InputPostType, ErrorType } from "./types"
+import { db } from "../db/db"
+import { InputPostType } from "./types"
 
 export const putPostRepository = {
     async update(id: string, input: InputPostType): Promise<InputPostType | undefined> {
@@ -10,6 +10,7 @@ export const putPostRepository = {
             db.posts[postIndex] = {
                 ...input,
                 id: db.posts[postIndex].id,
+                blogName: '' && db.blogs.find(blog => blog.id === input.blogId)?.name
                 
             }
         }
