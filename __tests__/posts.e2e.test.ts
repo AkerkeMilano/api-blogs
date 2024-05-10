@@ -36,25 +36,20 @@ describe('/posts', () => {
         const postRes = await req.post(SETTINGS.PATH.POSTS).send(newPost).set({'authorization': 'Basic ' + codedAuth}).expect(HTTP_STATUSES.CREATED_201)
     })
 
-    it('should not create a post since unauthorized', async () => {
+    it('should not create a post since input incorrect', async () => {
         const buff = Buffer.from(ADMIN_AUTH, 'utf8')
         const codedAuth = buff.toString('base64')
 
-        const newBlog = {
-            name: "About IT and AI",
-            description: "This blog tells about new skills required",
-            websiteUrl: "https://blog.logrocket.com/"
-        }
-        const blogRes = await req.post(SETTINGS.PATH.BLOGS).send(newBlog).set({'authorization': 'Basic ' + codedAuth})
         const newPost = {
             title: 'This is post about',
-            shortDescription: 'fwefwefewfwe',
+            shortDescription: 'length_101-DnZlTI1khUHpqOqCzftIYiSHCV8fKjYFQOoCIwmUczzW9V5K8cqY3aPKo3XKwbfrmeWOJyQgGnlX5sP3aW3RlaRSQx',
             content: 'fhtl,hlrt,h gl,rgler,  mkwemfkew',
-            blogId: blogRes.body.id,
-            blogName: blogRes.body.name
+            blogId: '12345'
         }
 
-        const postRes = await req.post(SETTINGS.PATH.POSTS).send(newPost).set({'authorization': 'Basic ' + codedAuth + 'fefef'}).expect(HTTP_STATUSES.UNAUTHORIZED_401)
+        const postRes = await req.post(SETTINGS.PATH.POSTS).send(newPost).set({'authorization': 'Basic ' + codedAuth}).expect(HTTP_STATUSES.BAD_REQUEST_400)
+
+        console.log(postRes.body)
     })
 
     it('should find post by id', async () => {

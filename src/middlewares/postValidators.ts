@@ -1,6 +1,7 @@
 import {body, validationResult} from 'express-validator'
 import { Request, Response, NextFunction } from 'express'
 import { HTTP_STATUSES } from '../settings'
+import { db } from '../db/db'
 
 // title: string,
 // shortDescription: string,
@@ -32,8 +33,24 @@ const postContentValidator = body('content')
     return /[a-z]/i.test(value)
 }).withMessage('content should contain letters')
 
+const postBlogIdValidator = body('blogId')
+.isString().withMessage('blogId should be string')
+.notEmpty()
+.custom(value => {
+    return db.blogs.find(blog => blog.id === value)
+}).withMessage('blogId is not created')
+
+const postBlogNameValidator = body('blogName')
+.isString().withMessage('blogName should be string')
+.notEmpty()
+.custom(value => {
+    return db.blogs.find(blog => blog.name === value)
+}).withMessage('blogName is not created')
+
 export const createInputValidators = [
     postTitleValidator,
     postDescriptionValidator,
-    postContentValidator
+    postContentValidator,
+    postBlogIdValidator,
+    postBlogNameValidator
 ]
