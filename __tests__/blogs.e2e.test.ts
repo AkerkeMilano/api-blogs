@@ -2,6 +2,8 @@ import { db, setDB } from "../src/db/db";
 import { dataset1 } from "./datasets";
 import { ADMIN_AUTH, HTTP_STATUSES, SETTINGS } from "../src/settings";
 import { req } from "./test-helpers";
+import { buff } from "../src/settings";
+import { codedAuth } from "../src/settings";
 
 describe('/blogs', () => {
     beforeAll(async () => {
@@ -120,5 +122,21 @@ describe('/blogs', () => {
         const codedAuth = buff.toString('base64')
 
         const res = await req.delete(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id).set({'authorization': 'Basic ' + codedAuth}).expect(HTTP_STATUSES.NO_CONTENT_204)
+    })
+
+    it('should not found blog', async () => {
+        setDB(dataset1)
+
+        const newBlog = {
+            name: "updated blog",
+            description: "This blog tells about new skills required",
+            websiteUrl: "https://blog.logrocket.com/"
+        }
+
+        const resPut = await req.put(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id).send(newBlog).set({'authorization': 'Basic ' + codedAuth})
+        const resDelete = await req.delete(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id).set({'authorization': 'Basic ' + codedAuth})
+        const resGet = await req.get(SETTINGS.PATH.BLOGS + '/' + dataset1.blogs[0].id).expect(HTTP_STATUSES.NOT_FOUND_404)
+
+        console.log("blog errors--------", resGet.body)
     })
 })

@@ -4,6 +4,8 @@ import { HTTP_STATUSES } from "../settings"
 
 export const findPostController = async (req: Request, res: Response) => {
     const post = await createPostRepository.find(req.params.id)
+    console.log("post---------", post)
+
     if(!post) {
         res.status(HTTP_STATUSES.NOT_FOUND_404).json("Post for passed id doesn't exist")
         return

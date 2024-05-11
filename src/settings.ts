@@ -20,3 +20,6 @@ export const HTTP_STATUSES = {
 }
 
 export const ADMIN_AUTH = 'admin:qwerty' 
+
+export const buff = Buffer.from(ADMIN_AUTH, 'utf8')
+export const codedAuth = buff.toString('base64')
