@@ -19,6 +19,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
             .json({ message: 'Unauthorized person' })
         return
     }
+    //test
 
     next()
 }
