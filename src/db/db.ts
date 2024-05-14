@@ -15,7 +15,6 @@ export type FullPostType = {
     blogName: string | undefined
 }
 export type PostType = {
-    id: string,
     title: string,
     shortDescription: string,
     content: string,

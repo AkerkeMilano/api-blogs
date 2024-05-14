@@ -10,7 +10,8 @@ export const SETTINGS = {
     },
     MONGO_URL: process.env.MONGO_URL || '',
     DN_NAME: process.env.DN_NAME || '',
-    BLOG_COLLECTION_NAME: process.env.BLOG_COLLECTION_NAME || ''
+    BLOG_COLLECTION_NAME: process.env.BLOG_COLLECTION_NAME || '',
+    POST_COLLECTION_NAME: process.env.POST_COLLECTION_NAME || ''
 }
 
 export const HTTP_STATUSES = {

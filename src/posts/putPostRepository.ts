@@ -1,23 +1,18 @@
-// import { postBlogsRepository } from "../blogs/postBlogsRepository"
-// import { db } from "../db/db"
-// import { InputPostType } from "./types"
+import { ObjectId } from "mongodb"
+import { postBlogsRepository } from "../blogs/postBlogsRepository"
+import { db } from "../db/db"
+import { postCollection } from "../db/mongo-db"
+import { InputPostType } from "./types"
 
-// export const putPostRepository = {
-//     async update(id: string, input: InputPostType): Promise<InputPostType | undefined> {
-//         //const blog = await postBlogsRepository.find(input.blogId)
-
-//         const post = db.posts.find(post => post.id === id)
-//         const postIndex = db.posts.findIndex(post => post.id === id)
-
-//         if(post) {
-//             db.posts[postIndex] = {
-//                 ...input,
-//                 id: db.posts[postIndex].id,
-//                 //blogName: blog?.name
-                
-//             }
-//         }
-        
-//         return post
-//     }
-// }
+export const putPostRepository = {
+    async update(id: ObjectId, input: InputPostType): Promise<{ id?: string, error?: string}> {
+        const blog = await postCollection.updateOne(
+            {_id: id}, 
+            {$set: { ...input }}
+            )
+        if(blog.matchedCount === 0) {
+            return {error: "blog not found"}
+        }
+        return { id: id.toString() }
+    }
+}

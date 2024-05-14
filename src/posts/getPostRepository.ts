@@ -1,6 +1,7 @@
-import { db } from "../db/db"
+import { postCollection } from "../db/mongo-db"
+
 export const getPostRepository = {
     async getAllPosts() {
-        return db.posts
+        return postCollection.find({}).toArray();
     }
 }

@@ -3,17 +3,14 @@ import { ObjectId } from 'mongodb';
 import { blogCollection } from "../db/mongo-db";
 
 export const updateBlogsRepository = {
-    async update(id: ObjectId, input: InputBlogType): Promise<ObjectId | null> {
-        console.log("updated id-------", id, input)
+    async update(id: ObjectId, input: InputBlogType): Promise<{ id?: string, error?: string }> {
         const blog = await blogCollection.updateOne(
             {_id: id}, 
-            {
-            $set: { 
-                name: input.name
-             }
-            }
+            {$set: { ...input }}
             )
-        console.log("blog--------", blog)
-        return blog.upsertedId
+        if(blog.matchedCount === 0) {
+            return {error: "blog not found"}
+        }
+        return { id: id.toString() }
     }
 }

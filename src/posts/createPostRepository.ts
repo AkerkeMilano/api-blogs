@@ -1,28 +1,31 @@
-// import { InputPostType, ErrorType } from "./types"
-// import { BlogType, db, PostType } from "../db/db"
-// import { findPostController } from "./findPostController"
-// import { postBlogsRepository } from "../blogs/postBlogsRepository"
-// import { postBlogsController } from "../blogs/postBlogsController"
+import { InputPostType, ErrorType } from "./types"
+import { BlogType, db, PostType } from "../db/db"
+import { postBlogsRepository } from "../blogs/postBlogsRepository"
+import { ObjectId } from 'mongodb';
+import { postCollection } from "../db/mongo-db"
 
-// export const createPostRepository = {
-//     async create(input: InputPostType): Promise<PostType | ErrorType> {
-//         const blog = await postBlogsRepository.find(input.blogId)
-//         const newPost = {
-//             ...input,
-//             id: Math.round(Date.now() + Math.random()).toString(),
-//             blogName: blog?.name
-//         }
+export const createPostRepository = {
+    async create(input: InputPostType): Promise<PostType | ErrorType> {
+        const blog = await postBlogsRepository.find(new ObjectId(input.blogId))
+        const newPost = {
+            ...input,
+            blogName: blog?.name,
+            createdAt: (new Date()).toISOString()
+        }
 
-//         try {
-//             db.posts = [...db.posts, newPost]
-//         } catch(e: any) {
-//             return { error: e.message}
-//         }
+        try {
+            const insertedPost = postCollection.insertOne(newPost)
+            console.log("inserted post", insertedPost)
 
-//         return newPost
-//     },
+        } catch(e: any) {
+            return { error: e.message}
+        }
 
-//     async find(id: string) {
-//         return db.posts.find(post => post.id === id)
-//     }
-// }
+
+        return newPost
+    },
+
+    async find(id: ObjectId) {
+        return postCollection.findOne({_id: id})
+    }
+}

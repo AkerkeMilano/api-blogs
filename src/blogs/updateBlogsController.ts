@@ -5,9 +5,8 @@ import { updateBlogsRepository } from "./updateBlogsRepository"
 import { ObjectId } from 'mongodb';
 
 export const updateBlogsController = async (req: Request, res: Response) => {
-    const blogId = await updateBlogsRepository.update(new ObjectId(req.params.id), req.body)
-    console.log("blogId------", blogId)
-    if(!blogId) {
+    const blog = await updateBlogsRepository.update(new ObjectId(req.params.id), req.body)
+    if(!blog.id) {
         res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         return
     }
