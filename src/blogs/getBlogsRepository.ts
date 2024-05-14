@@ -1,7 +1,9 @@
 import { db } from "../db/db"
+import { blogCollection } from "../db/mongo-db"
 
 export const getBlogsRepository = {
-    getAllBlogs() {
-        return db.blogs
+    async getAllBlogs() {
+        return blogCollection.find({}).toArray();
+        //return db.blogs
     }
 }

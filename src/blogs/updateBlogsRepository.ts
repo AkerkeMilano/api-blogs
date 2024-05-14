@@ -1,17 +1,19 @@
-import { db, BlogType } from "../db/db"
 import { InputBlogType, ErrorType } from "./types"
+import { ObjectId } from 'mongodb';
+import { blogCollection } from "../db/mongo-db";
 
 export const updateBlogsRepository = {
-    async update(id: string, input: InputBlogType): Promise<InputBlogType | undefined> {
-        const blog = db.blogs.find(blog => blog.id === id)
-        const blogIndex = db.blogs.findIndex(blog => blog.id === id)
-
-        if(blog) {
-            db.blogs[blogIndex] = {
-                ...input,
-                id: db.blogs[blogIndex].id,
+    async update(id: ObjectId, input: InputBlogType): Promise<ObjectId | null> {
+        console.log("updated id-------", id, input)
+        const blog = await blogCollection.updateOne(
+            {_id: id}, 
+            {
+            $set: { 
+                name: input.name
+             }
             }
-        }
-        return blog
+            )
+        console.log("blog--------", blog)
+        return blog.upsertedId
     }
 }

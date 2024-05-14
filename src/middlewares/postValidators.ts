@@ -36,9 +36,9 @@ const postContentValidator = body('content')
 const postBlogIdValidator = body('blogId')
 .isString().withMessage('blogId should be string')
 .notEmpty()
-.custom(value => {
-    return db.blogs.find(blog => blog.id === value)
-}).withMessage('blogId is not created')
+// .custom(value => {
+//     return db.blogs.find(blog => blog.id === value)
+// }).withMessage('blogId is not created')
 
 export const createInputValidators = [
     postTitleValidator,

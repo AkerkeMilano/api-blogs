@@ -1,21 +1,24 @@
-import { db, BlogType } from "../db/db"
+import { BlogType } from "../db/db"
 import { InputBlogType, ErrorType } from "./types"
+import { blogCollection } from "../db/mongo-db"
+import { ObjectId } from "mongodb"
 
 export const postBlogsRepository = {
     async create(input: InputBlogType): Promise<BlogType | ErrorType> {
         const newBlog = {
             ...input,
-            id: Math.round(Date.now() + Math.random()).toString()
+            createdAt: (new Date()).toISOString(),
+            isMembership: true
         }
 
         try {
-            db.blogs = [...db.blogs, newBlog]
+            const insertedInfo = await blogCollection.insertOne(newBlog)
         } catch(e: any) {
             return { error: e.message}
         }
         return newBlog
     },
-    async find(id: string){
-        return db.blogs.find(blog => blog.id === id)
+    async find(id: ObjectId){
+        return blogCollection.findOne({_id: id})
     }
 }

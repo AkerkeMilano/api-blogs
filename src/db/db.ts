@@ -1,8 +1,9 @@
 export type BlogType = {
-    id: string,
     name: string,
     description: string,
-    websiteUrl: string
+    websiteUrl: string,
+    createdAt: string,
+    isMembership: boolean
 }
 
 export type FullPostType = {
@@ -22,17 +23,19 @@ export type PostType = {
 }
 
 const blog1: BlogType = {
-    id: "t54t555",
     name: "About IT and AI",
     description: "This blogs tells about new skills required",
-    websiteUrl: "https://blog.logrocket.com/"
+    websiteUrl: "https://blog.logrocket.com/",
+    createdAt: '2024-05-13T12:34:52.634Z',
+    isMembership: true
 }
 
 const blog2: BlogType = {
-    id: "998dff9",
     name: "Fitness and sport",
     description: "This blogs tells about activities for every day",
-    websiteUrl: "https://blog.logrocket.com/"
+    websiteUrl: "https://blog.logrocket.com/",
+    createdAt: '2024-05-13T12:34:52.634Z',
+    isMembership: true
 }
 
 const post1: FullPostType = {

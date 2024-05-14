@@ -8,11 +8,14 @@ export const SETTINGS = {
         POSTS: '/posts',
         TESTING: '/testing/all-data'
     },
+    MONGO_URL: process.env.MONGO_URL || '',
+    DN_NAME: process.env.DN_NAME || '',
+    BLOG_COLLECTION_NAME: process.env.BLOG_COLLECTION_NAME || ''
 }
 
 export const HTTP_STATUSES = {
     OK_200: 200,
-    CREATED_201: 201,
+    CREATED_201: 201, 
     NO_CONTENT_204: 204,
     BAD_REQUEST_400: 400,
     NOT_FOUND_404: 404,
