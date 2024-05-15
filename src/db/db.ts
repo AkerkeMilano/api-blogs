@@ -6,6 +6,15 @@ export type BlogType = {
     isMembership: boolean
 }
 
+export type BlogTypeId = {
+    _id: string,
+    name: string,
+    description: string,
+    websiteUrl: string,
+    createdAt: string,
+    isMembership: boolean
+}
+
 export type FullPostType = {
     id: string,
     title: string,
