@@ -4,6 +4,7 @@ import { HTTP_STATUSES } from '../settings'
 import { db } from '../db/db'
 import { postBlogsRepository } from '../blogs/postBlogsRepository'
 import { ObjectId } from 'mongodb';
+import { blogCollection } from '../db/mongo-db'
 
 // title: string,
 // shortDescription: string,
@@ -38,9 +39,10 @@ const postContentValidator = body('content')
 const postBlogIdValidator = body('blogId')
 .isString().withMessage('blogId should be string')
 .notEmpty()
-.custom(async (value) => {
-    const blog = await postBlogsRepository.find(new ObjectId(value))
-    return blog
+.custom(async (id) => {
+    const idN = new ObjectId(id)
+    const blog = await blogCollection.findOne({_id: idN})
+    return Boolean(blog)
 }).withMessage('blogId is not created')
 
 export const createInputValidators = [
