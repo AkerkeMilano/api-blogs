@@ -32,12 +32,13 @@ export const createPostRepository = {
 
     },
 
-    async find(id: ObjectId) {
-        return postCollection.findOne({_id: id})
+    async find(id: string) {
+        return postCollection.findOne({_id: new ObjectId(id)})
     },
 
-    async findMapOutput(id: ObjectId) {
+    async findMapOutput(id: string) {
         const post = await this.find(id)
+        if(!post) return null
         return this.mapToOutput(post as PostType_Id)
     },
     mapToOutput(post: PostType_Id) {
