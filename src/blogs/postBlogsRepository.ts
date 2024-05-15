@@ -8,14 +8,18 @@ export const postBlogsRepository = {
         const newBlog = {
             ...input,
             createdAt: (new Date()).toISOString(),
-            isMembership: true,
+            isMembership: false,
             _id: new ObjectId()
         }
 
         try {
             const insertedInfo = await blogCollection.insertOne(newBlog)
             return {
-                ...newBlog,
+                name: newBlog.name,
+                description: newBlog.description,
+                websiteUrl: newBlog.websiteUrl,
+                createdAt: newBlog.createdAt,
+                isMembership: newBlog.isMembership,
                 id: insertedInfo.insertedId.toString()
             }
         } catch(e: any) {
