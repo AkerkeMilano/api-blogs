@@ -26,13 +26,13 @@ export const postBlogsRepository = {
             return { error: e.message}
         }
     },
-    async find(id: ObjectId){
-        return blogCollection.findOne({_id: id})
+    async find(id: string){
+        return blogCollection.findOne({_id: new ObjectId(id)})
 
     },
-    async findForOutput(id: ObjectId) {
+    async findForOutput(id: string) {
         const blog = await this.find(id)
-        if(!blog) return false
+        if(!blog) return null
         return this.mapToOutput(blog as BlogType_Id)
 
     },

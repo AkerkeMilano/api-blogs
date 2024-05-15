@@ -40,8 +40,10 @@ const postBlogIdValidator = body('blogId')
 .isString().withMessage('blogId should be string')
 .notEmpty()
 .custom(async (id) => {
-    const idN = new ObjectId(id)
-    const blog = await blogCollection.findOne({_id: idN})
+    const blog = await postBlogsRepository.findForOutput(id)
+    if(!blog){
+        throw new Error("Blog id not found")
+    }
     return Boolean(blog)
 }).withMessage('blogId is not created')
 

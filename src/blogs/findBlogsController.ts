@@ -5,7 +5,7 @@ import { postBlogsRepository } from "./postBlogsRepository"
 import { ObjectId } from 'mongodb';
 
 export const findBlogsController = async (req: Request, res: Response) => {
-    const blog = await postBlogsRepository.findForOutput(new ObjectId(req.params.id))
+    const blog = await postBlogsRepository.findForOutput(req.params.id)
 
     if(!blog) {
         res.status(HTTP_STATUSES.NOT_FOUND_404)
