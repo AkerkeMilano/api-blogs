@@ -10,5 +10,6 @@ export const getBlogsRepository = {
             }
             return mappedBlog
         })
+        return blogsArr
     }
 }
