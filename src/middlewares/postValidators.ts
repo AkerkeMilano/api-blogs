@@ -2,6 +2,8 @@ import {body, validationResult} from 'express-validator'
 import { Request, Response, NextFunction } from 'express'
 import { HTTP_STATUSES } from '../settings'
 import { db } from '../db/db'
+import { postBlogsRepository } from '../blogs/postBlogsRepository'
+import { ObjectId } from 'mongodb';
 
 // title: string,
 // shortDescription: string,
@@ -36,9 +38,10 @@ const postContentValidator = body('content')
 const postBlogIdValidator = body('blogId')
 .isString().withMessage('blogId should be string')
 .notEmpty()
-// .custom(value => {
-//     return db.blogs.find(blog => blog.id === value)
-// }).withMessage('blogId is not created')
+.custom(async (value) => {
+    const blog = await postBlogsRepository.find(new ObjectId(value))
+    return blog
+}).withMessage('blogId is not created')
 
 export const createInputValidators = [
     postTitleValidator,
