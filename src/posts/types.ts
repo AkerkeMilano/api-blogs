@@ -13,7 +13,8 @@ export type PostTypeId = {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: string | undefined
+    blogName: string | undefined,
+    createdAt: string
 }
 
 export type PostType_Id = {
@@ -22,7 +23,8 @@ export type PostType_Id = {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: string | undefined
+    blogName: string | undefined,
+    createdAt: string
 }
 
 export type ErrorType = {

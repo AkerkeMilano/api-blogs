@@ -22,7 +22,8 @@ export const createPostRepository = {
                 shortDescription: newPost.shortDescription,
                 content: newPost.content,
                 blogId: newPost.blogId,
-                blogName: newPost.blogName
+                blogName: newPost.blogName,
+                createdAt: newPost.createdAt
             }
 
         } catch(e: any) {
@@ -46,7 +47,8 @@ export const createPostRepository = {
             shortDescription: post.shortDescription,
             content: post.content,
             blogId: post.blogId,
-            blogName: post.blogName
+            blogName: post.blogName,
+            createdAt: post.createdAt
         }
     }
 }

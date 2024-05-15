@@ -10,7 +10,8 @@ export const getPostRepository = {
                 content: post.content,
                 shortDescription: post.shortDescription,
                 blogId: post.blogId,
-                blogName: post.blogName
+                blogName: post.blogName,
+                createdAt: post.createdAt
             }
         })
         return mappedPosts
