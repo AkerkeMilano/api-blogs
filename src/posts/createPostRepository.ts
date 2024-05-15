@@ -6,7 +6,7 @@ import { postCollection } from "../db/mongo-db"
 
 export const createPostRepository = {
     async create(input: InputPostType): Promise<PostTypeId | ErrorType> {
-        const blog = await postBlogsRepository.find(new ObjectId(input.blogId))
+        const blog = await postBlogsRepository.find(input.blogId)
         const newPost = {
             ...input,
             blogName: blog?.name,

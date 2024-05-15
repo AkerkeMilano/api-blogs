@@ -32,6 +32,7 @@ export const postBlogsRepository = {
     },
     async findForOutput(id: string) {
         const blog = await this.find(id)
+        console.log("blog---------check", blog)
         if(!blog) return null
         return this.mapToOutput(blog as BlogType_Id)
 
