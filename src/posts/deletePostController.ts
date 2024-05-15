@@ -4,7 +4,7 @@ import { deletePostRepository } from "./deletePostRepository"
 import { ObjectId } from 'mongodb';
 
 export const deletePostController = async (req: Request, res: Response) => {
-    const post = await deletePostRepository.delete(new ObjectId(req.params.id))
+    const post = await deletePostRepository.delete(req.params.id)
     if(!post) {
         res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         return
