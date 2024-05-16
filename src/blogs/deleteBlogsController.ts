@@ -4,7 +4,7 @@ import { deleteBlogsRepository } from "./deleteBlogsRepository"
 import { ObjectId } from 'mongodb';
 
 export const deleteBlogsController = async (req: Request, res: Response) => {
-    const blog = await deleteBlogsRepository.delete(new ObjectId(req.params.id))
+    const blog = await deleteBlogsRepository.delete(new ObjectId(req.params.id)) //  может быть ошибка из-за приведения к обджект айди
     if(!blog) {
         res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         return

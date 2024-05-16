@@ -6,7 +6,7 @@ import { ObjectId } from 'mongodb';
 
 export const putPostController = async (req: Request, res: Response) => {
     const post = await putPostRepository.update(new ObjectId(req.params.id), req.body)
-    if(!post) {
+    if(post.error) {
         res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         return
     }

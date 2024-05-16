@@ -6,6 +6,6 @@ export const deleteBlogsRepository = {
     async delete(id: ObjectId): Promise<Boolean | undefined> {
         const removedBlog = await blogCollection.deleteOne({_id: id})
 
-        return removedBlog.acknowledged
+        return removedBlog.deletedCount > 0
     }
 }
