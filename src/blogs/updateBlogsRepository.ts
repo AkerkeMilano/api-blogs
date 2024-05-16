@@ -7,14 +7,14 @@ export const updateBlogsRepository = {
     async update(id: string, input: InputBlogType): Promise<boolean | null> {
         const filteredBlog = await postBlogsRepository.find(id)
         if(!filteredBlog) {
-            return null
+            return false
         }
         const blog = await blogCollection.updateOne(
             {_id: new ObjectId(id)}, 
             {$set: { ...input }}
             )
         if(blog.matchedCount === 0) {
-            return null
+            return false
         }
         return true
     }
