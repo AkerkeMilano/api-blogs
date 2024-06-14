@@ -8,7 +8,7 @@ import { getPostByBlogController } from './getPostByBlogController'
 import { createPostForBlogController } from './createPostForBlogController'
 import { inputCheckErrorsMiddleware, postInputValidators } from '../middlewares/blogValidator'
 import { authMiddleware } from '../middlewares/authBlogMiddleware'
-import { createInputValidators } from '../middlewares/postValidators'
+import { postUpdatedValidators } from '../middlewares/postValidators'
 
 export const blogsRouter = Router()
  
@@ -18,4 +18,4 @@ blogsRouter.get('/:id', findBlogsController )
 blogsRouter.put('/:id', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, updateBlogsController)
 blogsRouter.delete('/:id', authMiddleware, deleteBlogsController)
 blogsRouter.get('/:blogId/posts', getPostByBlogController)
-blogsRouter.post('/:blogId/posts', authMiddleware, createInputValidators, inputCheckErrorsMiddleware, createPostForBlogController)
+blogsRouter.post('/:blogId/posts', authMiddleware, postUpdatedValidators, inputCheckErrorsMiddleware, createPostForBlogController)

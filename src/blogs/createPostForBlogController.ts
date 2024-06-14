@@ -10,5 +10,11 @@ export const createPostForBlogController = async (req: Request, res: Response) =
     }
     const post = req.body;
     const createdPost = await createPostForBlogRepository(post, blogId)
+
+    if(!createdPost) {
+        res.status(HTTP_STATUSES.NOT_FOUND_404).json("Blog id is not found")
+        return
+    }
+
     res.status(HTTP_STATUSES.OK_200).json(createdPost)
 }

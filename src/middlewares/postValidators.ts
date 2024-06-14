@@ -54,3 +54,9 @@ export const createInputValidators = [
     postBlogIdValidator
 ]
 
+export const postUpdatedValidators = [
+    postTitleValidator,
+    postDescriptionValidator,
+    postContentValidator
+]
+

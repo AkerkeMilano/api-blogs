@@ -2,8 +2,16 @@ import { ObjectId } from "mongodb"
 import { blogCollection, postCollection } from "../db/mongo-db"
 import { InputPostType } from "../posts/types"
 
-export const createPostForBlogRepository = async (input: InputPostType, blogId: string) => {
+type UpdatedPostType = {
+    title: string,
+    shortDescription: string,
+    content: string
+}
+export const createPostForBlogRepository = async (input: UpdatedPostType, blogId: string) => {
     const blog = await blogCollection.findOne({_id: new ObjectId(blogId)})
+    if(!blog){
+        return
+    }
     const newPost = {
         ...input,
         blogId: blogId,
