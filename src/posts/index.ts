@@ -9,7 +9,6 @@ import { inputCheckErrorsMiddleware } from "../middlewares/blogValidator";
 import { authMiddleware } from "../middlewares/authBlogMiddleware";
 import { deletePostController } from "./deletePostController";
 
-
 export const postsRouter = Router()
 
 

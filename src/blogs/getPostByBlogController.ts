@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import { getPostRepository } from "./getPostRepository";
 import { HTTP_STATUSES } from "../settings";
+import { getPostByBlogRepository } from "./getPostByBlogRepository";
 import { pagination } from "../helpers";
 
-export const getPostController = async (req: Request, res: Response) => {
+export const getPostByBlogController = async (req: Request, res: Response) => {
     const sanitizedQuery = pagination(req.query as { [key: string]: string | undefined })
-    const allPosts = await getPostRepository.getAllPosts(sanitizedQuery)
+    const blogId = req.params.blogId
+    const allPosts = await getPostByBlogRepository.getAllPosts(sanitizedQuery, blogId)
     res.status(HTTP_STATUSES.OK_200).json(allPosts)
 }

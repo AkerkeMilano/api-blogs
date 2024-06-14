@@ -1,6 +1,7 @@
+import { ObjectId } from "mongodb"
 import { postCollection } from "../db/mongo-db"
 
-export const getPostRepository = {
+export const getPostByBlogRepository = {
     mapToOutput(post: any) {
         return {
             id: post._id,
@@ -12,14 +13,17 @@ export const getPostRepository = {
             createdAt: post.createdAt
         }
     },
-    async getAllPosts(query: any) {
-        const totalCount = await postCollection.countDocuments()
+    async getAllPosts(query: any, blogId: string) {
+
+        const filter = { blogId: blogId }
+            
+        const totalCount = await postCollection.countDocuments(filter)
         const postsArr = await postCollection
-                .find()
-                .sort(query.sortBy, query.sortDirection)
-                .skip((query.pageNumber - 1) * query.pageSize)
-                .limit(query.pageSize)
-                .toArray() as any[]
+            .find(filter)
+            .sort(query.sortBy, query.sortDirection)
+            .skip((query.pageNumber - 1) * query.pageSize)
+            .limit(query.pageSize)
+            .toArray() as any[]
         return {
                     pagesCount: Math.ceil(totalCount / query.pageSize),
                     page: query.pageNumber,
@@ -27,5 +31,6 @@ export const getPostRepository = {
                     totalCount,
                     items: postsArr.map(this.mapToOutput)
                 }
+
     }
 }
