@@ -16,5 +16,5 @@ export const createPostForBlogController = async (req: Request, res: Response) =
         return
     }
 
-    res.status(HTTP_STATUSES.OK_200).json(createdPost)
+    res.status(HTTP_STATUSES.CREATED_201).json(createdPost)
 }
