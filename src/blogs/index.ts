@@ -17,5 +17,5 @@ blogsRouter.post('/', authMiddleware, postInputValidators, inputCheckErrorsMiddl
 blogsRouter.get('/:id', findBlogsController )
 blogsRouter.put('/:id', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, updateBlogsController)
 blogsRouter.delete('/:id', authMiddleware, deleteBlogsController)
-blogsRouter.get('/:blogId/posts', authMiddleware, getPostByBlogController)
+blogsRouter.get('/:blogId/posts', getPostByBlogController)
 blogsRouter.post('/:blogId/posts', authMiddleware, postUpdatedValidators, inputCheckErrorsMiddleware, createPostForBlogController)
