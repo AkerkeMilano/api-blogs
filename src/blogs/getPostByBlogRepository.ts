@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb"
 import { postCollection } from "../db/mongo-db"
+import { blogCollection } from "../db/mongo-db"
 
 export const getPostByBlogRepository = {
     mapToOutput(post: any) {
@@ -16,7 +17,11 @@ export const getPostByBlogRepository = {
     async getAllPosts(query: any, blogId: string) {
 
         const filter = { blogId: blogId }
-            
+        const blog = await blogCollection.findOne({ _id: new ObjectId(blogId)})
+
+        if(!blog){
+            return
+        }
         const totalCount = await postCollection.countDocuments(filter)
         const postsArr = await postCollection
             .find(filter)
