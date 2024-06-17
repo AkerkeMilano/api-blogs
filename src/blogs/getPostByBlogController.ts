@@ -11,5 +11,9 @@ export const getPostByBlogController = async (req: Request, res: Response) => {
         return
     }
     const allPosts = await getPostByBlogRepository.getAllPosts(sanitizedQuery, blogId)
+    if(!allPosts) {
+        res.status(HTTP_STATUSES.NOT_FOUND_404).json("Blog id is not found")
+        return
+    }
     res.status(HTTP_STATUSES.OK_200).json(allPosts)
 }
