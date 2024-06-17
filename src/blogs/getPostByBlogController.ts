@@ -11,5 +11,5 @@ export const getPostByBlogController = async (req: Request, res: Response) => {
         res.status(HTTP_STATUSES.NOT_FOUND_404).json("Blog id is not found")
         return
     }
-    res.status(HTTP_STATUSES.OK_200).json(allPosts)
+    res.status(HTTP_STATUSES.CREATED_201).json(allPosts)
 }
