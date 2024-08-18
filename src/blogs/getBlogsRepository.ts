@@ -21,6 +21,7 @@ export const getBlogsRepository = {
             ...search
         }
         const totalCount = await blogCollection.countDocuments(filter)
+        
         const blogsArr = await blogCollection
                 .find(filter)
                 .sort(query.sortBy, query.sortDirection)

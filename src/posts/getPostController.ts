@@ -6,5 +6,7 @@ import { pagination } from "../helpers";
 export const getPostController = async (req: Request, res: Response) => {
     const sanitizedQuery = pagination(req.query as { [key: string]: string | undefined })
     const allPosts = await getPostRepository.getAllPosts(sanitizedQuery)
-    res.status(HTTP_STATUSES.OK_200).json(allPosts)
+    res.send('User list');
+    //res.status(HTTP_STATUSES.OK_200).json(allPosts)
+
 }
