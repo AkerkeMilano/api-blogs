@@ -1,21 +1,50 @@
-import { db, BlogType } from "../db/db"
-import { InputBlogType, ErrorType } from "./types"
+import { BlogType } from "../db/db"
+import { InputBlogType, ErrorType, BlogTypeId, BlogType_Id } from "./types"
+import { blogCollection } from "../db/mongo-db"
+import { ObjectId } from "mongodb"
 
 export const postBlogsRepository = {
-    async create(input: InputBlogType): Promise<BlogType | ErrorType> {
+    async create(input: InputBlogType): Promise<BlogTypeId | ErrorType> {
         const newBlog = {
             ...input,
-            id: Math.round(Date.now() + Math.random()).toString()
+            createdAt: (new Date()).toISOString(),
+            isMembership: false,
+            _id: new ObjectId()
         }
 
         try {
-            db.blogs = [...db.blogs, newBlog]
+            const insertedInfo = await blogCollection.insertOne(newBlog)
+            return {
+                name: newBlog.name,
+                description: newBlog.description,
+                websiteUrl: newBlog.websiteUrl,
+                createdAt: newBlog.createdAt,
+                isMembership: newBlog.isMembership,
+                id: insertedInfo.insertedId.toString()
+            }
         } catch(e: any) {
             return { error: e.message}
         }
-        return newBlog
     },
     async find(id: string){
-        return db.blogs.find(blog => blog.id === id)
+        return blogCollection.findOne({_id: new ObjectId(id)})
+
+    },
+    async findForOutput(id: string) {
+        const blog = await this.find(id)
+        console.log("blog---------check", blog)
+        if(!blog) return null
+        return this.mapToOutput(blog as BlogType_Id)
+
+    },
+    mapToOutput(blog: BlogType_Id) {
+        return {
+            id: blog._id,
+            name: blog.name,
+            description: blog.description,
+            isMembership: blog.isMembership,
+            websiteUrl: blog.websiteUrl,
+            createdAt: blog.createdAt
+        }
     }
 }

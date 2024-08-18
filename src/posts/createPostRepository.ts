@@ -1,29 +1,55 @@
-import { InputPostType, ErrorType } from "./types"
+import { InputPostType, PostTypeId, PostType_Id, ErrorType } from "./types"
 import { BlogType, db, PostType } from "../db/db"
-import { findPostController } from "./findPostController"
 import { postBlogsRepository } from "../blogs/postBlogsRepository"
-import { postBlogsController } from "../blogs/postBlogsController"
+import { ObjectId } from 'mongodb';
+import { postCollection } from "../db/mongo-db"
 
 export const createPostRepository = {
-    async create(input: InputPostType): Promise<PostType | ErrorType> {
+    async create(input: InputPostType): Promise<PostTypeId | ErrorType> {
         const blog = await postBlogsRepository.find(input.blogId)
-        
         const newPost = {
             ...input,
-            id: Math.round(Date.now() + Math.random()).toString(),
-            blogName: blog?.name
+            blogName: blog?.name,
+            createdAt: (new Date()).toISOString(),
+            _id: new ObjectId()
         }
 
         try {
-            db.posts = [...db.posts, newPost]
+            const insertedPost = await postCollection.insertOne(newPost)
+            return {
+                id: insertedPost.insertedId.toString(),
+                title: newPost.title,
+                shortDescription: newPost.shortDescription,
+                content: newPost.content,
+                blogId: newPost.blogId,
+                blogName: newPost.blogName,
+                createdAt: newPost.createdAt
+            }
+
         } catch(e: any) {
             return { error: e.message}
         }
 
-        return newPost
     },
 
     async find(id: string) {
-        return db.posts.find(post => post.id === id)
+        return postCollection.findOne({_id: new ObjectId(id)})
+    },
+
+    async findMapOutput(id: string) {
+        const post = await this.find(id)
+        if(!post) return null
+        return this.mapToOutput(post as PostType_Id)
+    },
+    mapToOutput(post: PostType_Id) {
+        return {
+            id: post._id,
+            title: post.title,
+            shortDescription: post.shortDescription,
+            content: post.content,
+            blogId: post.blogId,
+            blogName: post.blogName,
+            createdAt: post.createdAt
+        }
     }
 }

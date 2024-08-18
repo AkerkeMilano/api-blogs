@@ -4,20 +4,18 @@ import { postBlogsController } from './postBlogsController'
 import { findBlogsController } from './findBlogsController'
 import { updateBlogsController } from './updateBlogsController'
 import { deleteBlogsController } from './deleteBlogsController'
-
+import { getPostByBlogController } from './getPostByBlogController'
+import { createPostForBlogController } from './createPostForBlogController'
 import { inputCheckErrorsMiddleware, postInputValidators } from '../middlewares/blogValidator'
 import { authMiddleware } from '../middlewares/authBlogMiddleware'
-// import { paramIdValidator } from '../middlewares/blogValidator'
+import { postUpdatedValidators } from '../middlewares/postValidators'
+
 export const blogsRouter = Router()
  
-blogsRouter.get('/', getBlogsController)
-blogsRouter.post('/', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, postBlogsController)
-blogsRouter.get('/:id', findBlogsController )
-blogsRouter.put('/:id', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, updateBlogsController)
-blogsRouter.delete('/:id', authMiddleware, deleteBlogsController)
-
-// videosRouter.post('/', createVideoController)
-// videosRouter.get('/:id', findVideoController)
-// videosRouter.put('/:id', putVideoController)
-// videosRouter.delete('/:id', deleteVideoController)
- 
+// blogsRouter.get('/', getBlogsController)
+// blogsRouter.post('/', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, postBlogsController)
+// blogsRouter.get('/:id', findBlogsController )
+// blogsRouter.put('/:id', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, updateBlogsController)
+// blogsRouter.delete('/:id', authMiddleware, deleteBlogsController)
+// blogsRouter.get('/:blogId/posts', getPostByBlogController)
+// blogsRouter.post('/:blogId/posts', authMiddleware, postUpdatedValidators, inputCheckErrorsMiddleware, createPostForBlogController)

@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { HTTP_STATUSES } from "../settings"
 import { deletePostRepository } from "./deletePostRepository"
+import { ObjectId } from 'mongodb';
 
 export const deletePostController = async (req: Request, res: Response) => {
     const post = await deletePostRepository.delete(req.params.id)

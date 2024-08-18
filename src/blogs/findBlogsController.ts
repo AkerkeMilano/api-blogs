@@ -2,9 +2,11 @@ import { Request, Response } from "express"
 import { HTTP_STATUSES } from "../settings"
 
 import { postBlogsRepository } from "./postBlogsRepository"
+import { ObjectId } from 'mongodb';
 
 export const findBlogsController = async (req: Request, res: Response) => {
-    const blog = await postBlogsRepository.find(req.params.id)
+    const blog = await postBlogsRepository.findForOutput(req.params.id)
+
     if(!blog) {
         res.status(HTTP_STATUSES.NOT_FOUND_404)
         .json("Blog for passed id doesn't exist")

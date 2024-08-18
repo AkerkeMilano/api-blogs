@@ -1,14 +1,11 @@
+import { ObjectId } from "mongodb";
 import { BlogType, db } from "../db/db";
+import { blogCollection } from "../db/mongo-db";
 
 export const deleteBlogsRepository = {
-    async delete(id: string): Promise<BlogType | undefined> {
-        const removedBlog = db.blogs.find(blog => blog.id === id)
+    async delete(id: ObjectId): Promise<Boolean | undefined> {
+        const removedBlog = await blogCollection.deleteOne({_id: id})
 
-        if(removedBlog) {
-            const filteredBlogs = db.blogs.filter(blog => blog.id !== id)
-            db.blogs = filteredBlogs
-        }
-
-        return removedBlog
+        return removedBlog.deletedCount > 0
     }
 }
