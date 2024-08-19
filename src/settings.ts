@@ -6,8 +6,8 @@ export const SETTINGS = {
     PATH: {
         BLOGS: '/blogs',
         POSTS: '/posts',
-        USERS: '/auth/users',
-        LOGIN: '/login',
+        USERS: '/users',
+        LOGIN: '/auth/login',
         TESTING: '/testing/all-data'
     },
     MONGO_URL: process.env.MONGO_URL || '',
