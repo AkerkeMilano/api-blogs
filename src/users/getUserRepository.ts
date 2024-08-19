@@ -26,6 +26,7 @@ export const getUserRepository = {
         }
 
         const totalCount = await userCollection.countDocuments(filter)
+        console.log("totalCount", totalCount)
         const usersArr = await userCollection
             .find(filter)
             .sort(query.sortBy, query.sortDirection)
