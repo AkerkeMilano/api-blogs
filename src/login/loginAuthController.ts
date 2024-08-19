@@ -9,5 +9,9 @@ export const loginAuthController = async (req: Request, res: Response) => {
         res.sendStatus(HTTP_STATUSES.UNAUTHORIZED_401)
         return
     }
+    if(userInfo.status === StatusCode.NotFound) {
+        res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
+        return
+    }
     res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
 }

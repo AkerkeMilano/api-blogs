@@ -16,7 +16,7 @@ export const loginAuthService = {
         const user = await loginAuthRepository.isUserExistByEmailOrLogin(input.loginOrEmail)
         if(!user) {
             return {
-                status: StatusCode.Unauthtorized,
+                status: StatusCode.NotFound,
                 message: "User is not found"
             }
         }

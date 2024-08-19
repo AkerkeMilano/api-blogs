@@ -32,7 +32,8 @@ export enum StatusCode {
     LoginError = '3',
     EmailError = '4',
     Unauthtorized = '5',
-    NoContent = '6'
+    NoContent = '6',
+    NotFound = '7'
 }
 
 export const ADMIN_AUTH = 'admin:qwerty' 
