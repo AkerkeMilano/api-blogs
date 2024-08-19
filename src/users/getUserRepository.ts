@@ -38,7 +38,6 @@ export const getUserRepository = {
                 id: user._id.toString(),
                 login: user.login,
                 email: user.email,
-                password: user.password,
                 createdAt: user.createdAt
             }
         })
