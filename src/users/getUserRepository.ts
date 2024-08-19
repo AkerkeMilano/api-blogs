@@ -9,11 +9,22 @@ export const getUserRepository = {
             ? { email: {$regex: query.searchEmailTerm, $options: 'i'}}
             : {}
         const filter = {
-            ...loginSearch,
-            ...emailSearch
+            $or: [
+                {
+                    $or: [
+                        loginSearch,
+                        emailSearch
+                    ]
+                },
+                {
+                    $and: [
+                        loginSearch,
+                        emailSearch
+                    ]
+                }
+            ]
         }
 
-        
         const totalCount = await userCollection.countDocuments(filter)
         const usersArr = await userCollection
             .find(filter)
