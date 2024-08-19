@@ -48,7 +48,6 @@ export const inputCheckErrorsMiddleware = (req: Request, res: Response, next: Ne
  
     if(!e.isEmpty()) {
         const eArray = e.array({onlyFirstError: true}) as { path: string, msg: string }[]
-
         res
         .status(HTTP_STATUSES.BAD_REQUEST_400)
         .json({

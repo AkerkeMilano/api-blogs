@@ -24,3 +24,11 @@ export type UserTypeId = {
 export type ErrorType = {
     error: string
 }
+
+export type UserPaginationType = {
+    pagesCount: number,
+    page: number,
+    pageSize: number,
+    totalCount: number,
+    items: UserTypeId[]
+}

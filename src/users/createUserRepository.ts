@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb"
+import bcrypt from "bcrypt"
 import { InputUserType, UserTypeId, UserType_Id } from "./types"
 import { userCollection } from "../db/mongo-db"
 
@@ -10,7 +11,13 @@ export const createUserRepository = {
             createdAt: (new Date()).toISOString()
         }
 
-        const insertedUser = await userCollection.insertOne(newUser)
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(newUser.password, saltRounds)
+        const updatedUser = {
+            ...newUser,
+            password: hashedPassword
+        }
+        const insertedUser = await userCollection.insertOne(updatedUser)
         const user = {
             id: insertedUser.insertedId.toString(),
             login: newUser.login,

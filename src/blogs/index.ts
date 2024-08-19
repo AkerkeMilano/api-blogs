@@ -12,10 +12,10 @@ import { postUpdatedValidators } from '../middlewares/postValidators'
 
 export const blogsRouter = Router()
  
-// blogsRouter.get('/', getBlogsController)
-// blogsRouter.post('/', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, postBlogsController)
-// blogsRouter.get('/:id', findBlogsController )
-// blogsRouter.put('/:id', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, updateBlogsController)
-// blogsRouter.delete('/:id', authMiddleware, deleteBlogsController)
-// blogsRouter.get('/:blogId/posts', getPostByBlogController)
-// blogsRouter.post('/:blogId/posts', authMiddleware, postUpdatedValidators, inputCheckErrorsMiddleware, createPostForBlogController)
+blogsRouter.get('/', getBlogsController)
+blogsRouter.post('/', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, postBlogsController)
+blogsRouter.get('/:id', findBlogsController )
+blogsRouter.put('/:id', authMiddleware, postInputValidators, inputCheckErrorsMiddleware, updateBlogsController)
+blogsRouter.delete('/:id', authMiddleware, deleteBlogsController)
+blogsRouter.get('/:blogId/posts', getPostByBlogController)
+blogsRouter.post('/:blogId/posts', authMiddleware, postUpdatedValidators, inputCheckErrorsMiddleware, createPostForBlogController)

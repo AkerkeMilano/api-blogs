@@ -7,6 +7,7 @@ export const SETTINGS = {
         BLOGS: '/blogs',
         POSTS: '/posts',
         USERS: '/users',
+        LOGIN: '/login',
         TESTING: '/testing/all-data'
     },
     MONGO_URL: process.env.MONGO_URL || '',
@@ -29,7 +30,9 @@ export enum StatusCode {
     Success = '1',
     BadRequest = '2',
     LoginError = '3',
-    EmailError = '4'
+    EmailError = '4',
+    Unauthtorized = '5',
+    NoContent = '6'
 }
 
 export const ADMIN_AUTH = 'admin:qwerty' 

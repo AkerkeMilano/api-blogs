@@ -8,7 +8,6 @@ export const deletePostRepository = {
         const filteredPost = await createPostRepository.find(id)
         if(!filteredPost) return false
         const removedBlog = await postCollection.deleteOne({_id: new ObjectId(id)})
-        console.log("removed blog", removedBlog)
         return removedBlog.acknowledged
     }
 }

@@ -11,5 +11,7 @@ export const pagination = (query: { [key: string]: string | undefined }) => {
     sortBy: query.sortBy ? query.sortBy : 'createdAt',
     sortDirection: query.sortDirection ? query.sortDirection : 'desc',
     searchNameTerm: query.searchNameTerm ? query.searchNameTerm : null,
+    searchLoginTerm: query.searchLoginTerm ? query.searchLoginTerm : null,
+    searchEmailTerm: query.searchEmailTerm ? query.searchEmailTerm : null
   }
 }
