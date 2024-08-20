@@ -1,4 +1,5 @@
 import { userRepository } from "../repository/userRepository";
+import { userQueryRepository } from "../repository/userQueryRepository";
 import { InputUserType, UserTypeId } from "../types";
 import { StatusCode } from "../../settings";
 import { ObjectId } from "mongodb";
@@ -14,7 +15,7 @@ type UserResult = {
 }
 export const userService = {
     async getAll(query: any) {
-        const users = await userRepository.getAllUsers(query)
+        const users = await userQueryRepository.getAllUsers(query)
         return users
     },
     async registerUser(input: InputUserType): Promise<UserResult> {

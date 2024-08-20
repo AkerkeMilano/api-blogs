@@ -1,9 +1,7 @@
-import bcrypt from 'bcrypt';
-
 import { LoginEmailType } from "./types"
 import { loginAuthRepository } from "./loginAuthRepository"
 import { StatusCode } from "../settings"
-
+import { passportService } from "../adapters/passwordService"
 type UserResult = {
     status: StatusCode,
     message: [
@@ -21,7 +19,7 @@ export const loginAuthService = {
             }
         }
         
-        const isPasswordValid = await bcrypt.compare(input.password, user.password)
+        const isPasswordValid = await passportService.compareHash(input.password, user.password)
         if(!isPasswordValid) {
             return {
                 status: StatusCode.Unauthtorized,
