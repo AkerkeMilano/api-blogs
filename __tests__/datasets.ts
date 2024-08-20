@@ -6,17 +6,17 @@
 //     posts: FullPostType[]
 // }
 
-// const blog1: BlogType = {
-//     name: "About IT and AI",
-//     description: "This blogs tells about new skills required",
-//     websiteUrl: "https://blog.logrocket.com/"
-// }
+// // const blog1: BlogType = {
+// //     name: "About IT and AI",
+// //     description: "This blogs tells about new skills required",
+// //     websiteUrl: "https://blog.logrocket.com/"
+// // }
 
-// const blog2: BlogType = {
-//     name: "Fitness and sport",
-//     description: "This blogs tells about activities for every day",
-//     websiteUrl: "https://blog.logrocket.com/"
-// }
+// // const blog2: BlogType = {
+// //     name: "Fitness and sport",
+// //     description: "This blogs tells about activities for every day",
+// //     websiteUrl: "https://blog.logrocket.com/"
+// // }
 
 // const post1: FullPostType = {
 //     id: "333r3r3",

@@ -1,7 +1,11 @@
+import { ObjectId } from "mongodb"
 import { userCollection } from "../../db/mongo-db"
 import { UserPaginationType } from "../types"
 
 export const userQueryRepository = {
+    async getById(id: string) {
+        return await userCollection.findOne({ _id: new ObjectId(id)})
+    },
     async getAllUsers(query: any): Promise<UserPaginationType> {
         const loginSearch = query.searchLoginTerm
             ? { login: {$regex: query.searchLoginTerm, $options: 'i'}}

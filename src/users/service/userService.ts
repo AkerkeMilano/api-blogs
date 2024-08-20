@@ -55,6 +55,8 @@ export const userService = {
         }
     }, 
     async deleteUser(id: string) {
+        const isUserExist = await userQueryRepository.getById(id)
+        if(!isUserExist) return false
         return await userRepository.delete(id)
     }
 }
