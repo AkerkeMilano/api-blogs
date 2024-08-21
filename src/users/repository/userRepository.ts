@@ -13,7 +13,7 @@ export const userRepository = {
             id: insertedUser.insertedId.toString(),
             login: input.login,
             email: input.email,
-            createdAt: (new Date()).toISOString(),
+            createdAt: input.createdAt
         }
         return user
     },
