@@ -1,5 +1,4 @@
 import { userRepository } from "../repository/userRepository";
-import { userQueryRepository } from "../repository/userQueryRepository";
 import { InputUserType, UserTypeId } from "../types";
 import { StatusCode } from "../../settings";
 import { ObjectId } from "mongodb";
@@ -14,10 +13,6 @@ type UserResult = {
     ] | string
 }
 export const userService = {
-    async getAll(query: any) {
-        const users = await userQueryRepository.getAllUsers(query)
-        return users
-    },
     async registerUser(input: InputUserType): Promise<UserResult> {
         const isUserExistByEmail = await userRepository.checkExistingUserByEmail(input.email)
         const isUserExistByLogin = await userRepository.checkExistingUserByLogin(input.login)
@@ -55,7 +50,7 @@ export const userService = {
         }
     }, 
     async deleteUser(id: string) {
-        const isUserExist = await userQueryRepository.getById(id)
+        const isUserExist = await userRepository.getById(id)
         if(!isUserExist) return false
         return await userRepository.delete(id)
     }

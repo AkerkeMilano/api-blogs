@@ -4,6 +4,9 @@ import { UserTypeId, UserType_Id } from "../types"
 import { userCollection } from "../../db/mongo-db"
 
 export const userRepository = {
+    async getById(id: string) {
+        return await userCollection.findOne({ _id: new ObjectId(id)})
+    },
     async create(input: UserType_Id): Promise<UserTypeId> {
         const insertedUser = await userCollection.insertOne(input)
         const user = {
