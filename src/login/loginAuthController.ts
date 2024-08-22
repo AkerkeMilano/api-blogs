@@ -9,5 +9,7 @@ export const loginAuthController = async (req: Request, res: Response) => {
         res.status(HTTP_STATUSES.UNAUTHORIZED_401).json("Wrong password or login")
         return
     }
-    res.status(HTTP_STATUSES.NO_CONTENT_204).json("User is logged in")
+    res.status(HTTP_STATUSES.OK_200).json({
+        "accessToken": userInfo.token
+      })
 }

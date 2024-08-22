@@ -14,7 +14,8 @@ export const SETTINGS = {
     DN_NAME: process.env.DN_NAME || '',
     BLOG_COLLECTION_NAME: process.env.BLOG_COLLECTION_NAME || '',
     POST_COLLECTION_NAME: process.env.POST_COLLECTION_NAME || '',
-    USER_COLLECTION_NAME: process.env.USER_COLLECTION_NAME || ''
+    USER_COLLECTION_NAME: process.env.USER_COLLECTION_NAME || '',
+    JWT_SECRET_KEY: process.env.JWT_SECRET_KEY ||'login123'
 }
 
 export const HTTP_STATUSES = {
