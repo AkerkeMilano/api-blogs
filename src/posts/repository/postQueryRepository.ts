@@ -49,7 +49,7 @@ export const postQueryRepository = {
         if(!post) return null
 
         const filter = { postId: postId }
-        const totalCount = await postCollection.countDocuments()
+        const totalCount = await commentCollection.countDocuments(filter)
         const commentsArr = await commentCollection
                 .find(filter)
                 .sort(query.sortBy, query.sortDirection)
