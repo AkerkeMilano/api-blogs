@@ -17,7 +17,7 @@ export const postService = {
         return await postRepository.create(updatedInput)
     },
     async update(id: string, input: InputPostType) {
-        const post = await postRepository.update(new ObjectId(id), input)
+        const post = await postRepository.update(id, input)
         if(post.matchedCount === 0) {
             return null
         }

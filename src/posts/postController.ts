@@ -30,7 +30,7 @@ export const updatePost = async (req: Request, res: Response) => {
         res.status(HTTP_STATUSES.NOT_FOUND_404).json("Post for passed id doesn't exist")
         return
     }
-    res.status(HTTP_STATUSES.NO_CONTENT_204)
+    res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
 }
 
 export const deletePost = async (req: Request, res: Response) => {
@@ -39,7 +39,7 @@ export const deletePost = async (req: Request, res: Response) => {
         res.status(HTTP_STATUSES.NOT_FOUND_404).json("Post for passed id doesn't exist")
         return
     }
-    res.status(HTTP_STATUSES.NO_CONTENT_204)
+    res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
 }
 
 export const createComment = async (req: Request, res: Response) => {
@@ -58,6 +58,5 @@ export const getCommentsByPost = async (req: Request, res: Response) => {
         res.status(HTTP_STATUSES.NOT_FOUND_404).json("Post for passed id doesn't exist")
         return
     }
-    console.log("comments", comments)
     res.status(HTTP_STATUSES.OK_200).json(comments)
 }

@@ -25,9 +25,9 @@ export const postRepository = {
     async find(id: string) {
         return await postCollection.findOne({_id: new ObjectId(id)})
     },
-    async update(id: ObjectId, input: InputPostType){
+    async update(id: string, input: InputPostType){
         const post = await postCollection.updateOne(
-            {_id: id}, 
+            {_id: new ObjectId(id)}, 
             {$set: { ...input }}
             )
         return post
