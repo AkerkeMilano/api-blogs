@@ -39,7 +39,7 @@ export const postQueryRepository = {
                 }
     },
     async findById(id: string) {
-        const post = postCollection.findOne({_id: new ObjectId(id)})
+        const post = await postCollection.findOne({_id: new ObjectId(id)})
         if(!post) return null
         return this.mapToOutput(post)
     },

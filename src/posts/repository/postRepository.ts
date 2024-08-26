@@ -23,7 +23,7 @@ export const postRepository = {
         }
     },
     async find(id: string) {
-        return postCollection.findOne({_id: new ObjectId(id)})
+        return await postCollection.findOne({_id: new ObjectId(id)})
     },
     async update(id: ObjectId, input: InputPostType){
         const post = await postCollection.updateOne(
