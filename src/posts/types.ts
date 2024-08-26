@@ -30,3 +30,4 @@ export type PostType_Id = {
 export type ErrorType = {
     error: string
 }
+

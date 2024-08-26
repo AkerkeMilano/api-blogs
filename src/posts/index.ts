@@ -1,19 +1,18 @@
 import { Router } from "express";
 
-import { getPostController } from "./getPostController";
-import { createPostController } from "./createPostController";
-import { findPostController } from "./findPostController";
-import { putPostController } from "./putPostController";
+import { getAllPosts, getPostById, createPost, updatePost, deletePost, createComment, getCommentsByPost } from "./postController";
 import { createInputValidators } from "../middlewares/postValidators";
+import { commentInputValidators } from "../middlewares/commentValidator";
 import { inputCheckErrorsMiddleware } from "../middlewares/blogValidator";
 import { authMiddleware } from "../middlewares/authBlogMiddleware";
-import { deletePostController } from "./deletePostController";
-
+import { authUserMiddleware } from "../middlewares/authUserMiddleware";
 export const postsRouter = Router()
 
+postsRouter.get('/', getAllPosts)
+postsRouter.post('/', authMiddleware, createInputValidators, inputCheckErrorsMiddleware, createPost)
+postsRouter.get('/:id', getPostById)
+postsRouter.put('/:id', authMiddleware, createInputValidators, inputCheckErrorsMiddleware, updatePost)
+postsRouter.delete('/:id', authMiddleware, deletePost)
 
-postsRouter.get('/', getPostController)
-postsRouter.post('/', authMiddleware, createInputValidators, inputCheckErrorsMiddleware, createPostController)
-postsRouter.get('/:id', findPostController)
-postsRouter.put('/:id', authMiddleware, createInputValidators, inputCheckErrorsMiddleware, putPostController)
-postsRouter.delete('/:id', authMiddleware, deletePostController)
+postsRouter.get('/:id/comments', getCommentsByPost)
+postsRouter.post('/:id/comments', authUserMiddleware, commentInputValidators,inputCheckErrorsMiddleware, createComment)
