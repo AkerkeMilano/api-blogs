@@ -5,6 +5,7 @@ import { testingRouter } from './testing'
 import { postsRouter } from './posts'
 import { userRouter } from './users'
 import { loginRouter } from './login'
+import { commentRouter } from './comments'
 //test
 export const app = express()
 app.use(express.json())
@@ -18,3 +19,4 @@ app.use(SETTINGS.PATH.POSTS, postsRouter)
 app.use(SETTINGS.PATH.TESTING, testingRouter)
 app.use(SETTINGS.PATH.USERS, userRouter)
 app.use(SETTINGS.PATH.LOGIN, loginRouter)
+app.use(SETTINGS.PATH.COMMENTS, commentRouter)

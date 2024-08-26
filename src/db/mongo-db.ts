@@ -3,6 +3,7 @@ import { SETTINGS } from '../settings'
 import { BlogType_Id } from '../blogs/types'
 import { PostType_Id } from '../posts/types'
 import { UserType_Id } from '../users/types'
+import { CommentType_Id } from '../comments/types'
 
 let client: MongoClient = {} as MongoClient
 export let db: Db = {} as Db
@@ -10,6 +11,7 @@ export let db: Db = {} as Db
 export let blogCollection: Collection<BlogType_Id> = {} as Collection<BlogType_Id>
 export let postCollection: Collection<PostType_Id> = {} as Collection<PostType_Id>
 export let userCollection: Collection<UserType_Id> = {} as Collection<UserType_Id>
+export let commentCollection: Collection<CommentType_Id> = {} as Collection<CommentType_Id>
 
 export const connectToDB = async (MONGO_URL: string) => {
     try {
@@ -18,6 +20,7 @@ export const connectToDB = async (MONGO_URL: string) => {
         blogCollection = db.collection<BlogType_Id>(SETTINGS.BLOG_COLLECTION_NAME)
         postCollection = db.collection<PostType_Id>(SETTINGS.POST_COLLECTION_NAME)
         userCollection = db.collection<UserType_Id>(SETTINGS.USER_COLLECTION_NAME)
+        commentCollection = db.collection<CommentType_Id>(SETTINGS.COMMENT_COLLECTION_NAME)
         await client.connect()
         console.log("Connected to DB!")
         

@@ -1,4 +1,4 @@
-import { LoginEmailType } from "./types"
+    import { LoginEmailType } from "./types"
 import { userCollection } from "../db/mongo-db";
 
 export const loginAuthRepository = {

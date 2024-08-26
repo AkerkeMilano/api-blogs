@@ -8,6 +8,7 @@ export const SETTINGS = {
         POSTS: '/posts',
         USERS: '/users',
         LOGIN: '/auth/login',
+        COMMENTS: '/comments',
         TESTING: '/testing/all-data'
     },
     MONGO_URL: process.env.MONGO_URL || '',
@@ -15,6 +16,7 @@ export const SETTINGS = {
     BLOG_COLLECTION_NAME: process.env.BLOG_COLLECTION_NAME || '',
     POST_COLLECTION_NAME: process.env.POST_COLLECTION_NAME || '',
     USER_COLLECTION_NAME: process.env.USER_COLLECTION_NAME || '',
+    COMMENT_COLLECTION_NAME: process.env.COMMENT_COLLECTION_NAME || '',
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY ||'login123'
 }
 
@@ -24,7 +26,8 @@ export const HTTP_STATUSES = {
     NO_CONTENT_204: 204,
     BAD_REQUEST_400: 400,
     NOT_FOUND_404: 404,
-    UNAUTHORIZED_401: 401
+    UNAUTHORIZED_401: 401,
+    FORBIDDEN_403: 403
 }
 
 export enum StatusCode {
@@ -34,7 +37,8 @@ export enum StatusCode {
     EmailError = '4',
     Unauthtorized = '5',
     NoContent = '6',
-    NotFound = '7'
+    NotFound = '7',
+    Forbidden = '8'
 }
 
 export const ADMIN_AUTH = 'admin:qwerty' 

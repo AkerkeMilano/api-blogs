@@ -15,9 +15,11 @@ export const authUserMiddleware = async (req: Request, res: Response, next: Next
     const token = auth.split(' ')[1]
     try {
         const userId = await jwtService.getUserIdByToken(token)
-        const user = userId && await userRepository.getById(userId)
-        req.user = user
-        return next()
+        const user = await userRepository.getById(userId)
+        if(user) {
+            req.user = user
+            return next()
+        }
     }catch(e) {
         return res
         .status(HTTP_STATUSES.UNAUTHORIZED_401)
