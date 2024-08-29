@@ -1,6 +1,5 @@
 import { ObjectId } from "mongodb"
 import { commentCollection } from "../../db/mongo-db"
-import { CommentType_Id } from "../types"
 
 export const commentQueryRepository = {
     async getById(id: string){

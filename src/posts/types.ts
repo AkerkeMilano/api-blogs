@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb"
-
 export type InputPostType = {
     title: string,
     shortDescription: string,
@@ -7,7 +5,7 @@ export type InputPostType = {
     blogId: string
 }
 
-export type PostTypeId = {
+export type PostViewType = {
     id: string,
     title: string,
     shortDescription: string,
@@ -17,8 +15,7 @@ export type PostTypeId = {
     createdAt: string
 }
 
-export type PostType_Id = {
-    _id: ObjectId,
+export type PostEntityType = {
     title: string,
     shortDescription: string,
     content: string,
@@ -27,6 +24,13 @@ export type PostType_Id = {
     createdAt: string
 }
 
+export type PostPaginationViewType = {
+    pagesCount: number,
+    page: number,
+    pageSize: number,
+    totalCount: number,
+    items: PostViewType[]
+}
 export type ErrorType = {
     error: string
 }

@@ -1,7 +1,15 @@
 import { ObjectId } from "mongodb"
 import { commentCollection } from "../../db/mongo-db"
-import { CommentInputType } from "../types"
+import { CommentInputType, CommentEntityType } from "../types"
 export const commentRepository = {
+    async create(dto: CommentEntityType): Promise<string | any> {
+        try {
+            const insertedComment = await commentCollection.insertOne(dto)
+            return insertedComment.insertedId.toString()
+        } catch(e) {
+            return { error: e}
+        }
+    },
     async findById(id: string) {
         return await commentCollection.findOne({ _id: new ObjectId(id)})
     },

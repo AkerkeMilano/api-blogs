@@ -1,53 +1,31 @@
-import { InputPostType, PostType_Id } from "../types"
-import { CommentType_Id } from "../../comments/types"
+import { InputPostType, PostEntityType, PostViewType } from "../types"
 import { postCollection } from "../../db/mongo-db"
 import { ObjectId } from "mongodb"
-import { commentCollection } from "../../db/mongo-db"
 
+//type CreatePostType = Omit<PostEntityType, '_id'>
+//return createdId
 export const postRepository = {
-    async create(updatedInput: PostType_Id) {
+    async create(dto: PostEntityType): Promise<string | any> {
         try {
-            const insertedPost = await postCollection.insertOne(updatedInput)
-            return {
-                id: insertedPost.insertedId.toString(),
-                title: updatedInput.title,
-                shortDescription: updatedInput.shortDescription,
-                content: updatedInput.content,
-                blogId: updatedInput.blogId,
-                blogName: updatedInput.blogName,
-                createdAt: updatedInput.createdAt
-            }
+            const insertedPost = await postCollection.insertOne(dto)
+            return insertedPost.insertedId.toString()
         } catch(e) {
             console.log("Post create error")
             return { error: e }
         }
     },
-    async find(id: string) {
+    async find(id: string): Promise<PostEntityType | null> {
         return await postCollection.findOne({_id: new ObjectId(id)})
     },
     async update(id: string, input: InputPostType){
         const post = await postCollection.updateOne(
             {_id: new ObjectId(id)}, 
-            {$set: { ...input }}
+            {$set: { ...input }}//update
             )
         return post
     },
     async delete(id: string): Promise<Boolean | undefined> {
         const removedBlog = await postCollection.deleteOne({_id: new ObjectId(id)})
         return removedBlog.acknowledged
-    },
-    async postComment(updatedComment: CommentType_Id) {
-        try {
-            const insertedComment = await commentCollection.insertOne(updatedComment)
-        return {
-            id: insertedComment.insertedId.toString(),
-            content: updatedComment.content,
-            commentatorInfo: {...updatedComment.commentatorInfo},
-            createdAt: updatedComment.createdAt
-        }
-        } catch(e) {
-            console.log("Comment create error")
-            return e
-        }
     }
 }

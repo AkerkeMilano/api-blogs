@@ -14,7 +14,7 @@ export const getCommentById = async (req: Request, res: Response) => {
 }
 
 export const deleteComment = async (req: Request, res: Response) => {
-    const comment = await commentService.deleteComment(req.params.id, req.user)
+    const comment = await commentService.deleteComment(req.params.id, req.userId)
     if(comment.status === StatusCode.NotFound) {
         res.status(HTTP_STATUSES.NOT_FOUND_404).json("Comment for passed id doesn't exist")
         return
@@ -27,7 +27,7 @@ export const deleteComment = async (req: Request, res: Response) => {
 }
 
 export const updateComment = async (req: Request, res: Response) => {
-    const comment = await commentService.updateComment(req.params.id, req.body, req.user)
+    const comment = await commentService.updateComment(req.params.id, req.body, req.userId)
     if(comment.status === StatusCode.NotFound) {
         res.status(HTTP_STATUSES.NOT_FOUND_404).json("Comment for passed id doesn't exist")
         return

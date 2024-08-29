@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb"
 import { postCollection, commentCollection } from "../../db/mongo-db"
-import { PostType_Id } from "../types"
+import { PostViewType, PostPaginationViewType } from "../types"
 
 export const postQueryRepository = {
     mapToOutput(post: any) {
@@ -22,7 +22,7 @@ export const postQueryRepository = {
             createdAt: comment.createdAt
         }
     },
-    async getAllPosts(query: any) {
+    async getAllPosts(query: any): Promise<PostPaginationViewType> {
         const totalCount = await postCollection.countDocuments()
         const postsArr = await postCollection
                 .find()
@@ -38,7 +38,7 @@ export const postQueryRepository = {
                     items: postsArr.map(this.mapToOutput)
                 }
     },
-    async findById(id: string) {
+    async findById(id: string): Promise<PostViewType | null> {
         const post = await postCollection.findOne({_id: new ObjectId(id)})
         if(!post) return null
         return this.mapToOutput(post)

@@ -1,7 +1,6 @@
 import { ObjectId } from "mongodb"
 import { commentRepository } from "../repository/commentRepository"
-import { CommentInputType } from "../types"
-import { UserType_Id } from "../../users/types"
+import { CommentInputType, CommentEntityType } from "../types"
 import { userRepository } from "../../users/repository/userRepository"
 import { StatusCode } from "../../settings"
 type CommentResult = {
@@ -9,7 +8,21 @@ type CommentResult = {
     success: Boolean
 }
 export const commentService = {
-    async deleteComment(id: string, user: any): Promise<CommentResult>{
+    async createComment(postId: string, input: CommentInputType, userId: string): Promise<string | null> {
+        const user = await userRepository.getById(userId)
+        const dtoComment = {
+            postId: postId,
+            content: input.content,
+            commentatorInfo: {
+                userId: userId,
+                userLogin: user!.login
+            },
+            createdAt: (new Date()).toISOString()
+        }
+        const insertedCommentId = await commentRepository.create(dtoComment)
+        return insertedCommentId
+    },
+    async deleteComment(id: string, userId: string): Promise<CommentResult>{
         const comment = await commentRepository.findById(id)
         if(!comment) {
             return {
@@ -17,7 +30,7 @@ export const commentService = {
                 success: false
             }
         }
-        if(comment?.commentatorInfo.userId !== user._id.toString()){
+        if(comment?.commentatorInfo.userId !== userId){
             return {
                 status: StatusCode.Forbidden,
                 success: false
@@ -29,7 +42,7 @@ export const commentService = {
             success: isDeleted
         }
     },
-    async updateComment(id: string, input: CommentInputType, user: any): Promise<CommentResult> {
+    async updateComment(id: string, input: CommentInputType, userId: string): Promise<CommentResult> {
         const filteredComment = await commentRepository.findById(id)
         if(!filteredComment){
             return {
@@ -37,7 +50,7 @@ export const commentService = {
                 success: false
             }
         }
-        if(filteredComment?.commentatorInfo.userId !== user._id.toString()){
+        if(filteredComment?.commentatorInfo.userId !== userId){
             return {
                 status: StatusCode.Forbidden,
                 success: false
@@ -50,3 +63,5 @@ export const commentService = {
         }
     }
 }
+
+///createCommment by postId here

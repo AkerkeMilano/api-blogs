@@ -2,17 +2,18 @@ import { ObjectId } from "mongodb"
 import { postBlogsRepository } from "../../blogs/postBlogsRepository"
 import { postRepository } from "../repository/postRepository"
 import { InputPostType } from "../types"
-import { UserType_Id } from "../../users/types"
 import { CommentInputType } from "../../comments/types"
-
+import { commentService } from "../../comments/service/commentService"
 export const postService = {
-    async create(input: InputPostType) {
+    async create(input: InputPostType): Promise<string> {
         const blog = await postBlogsRepository.find(input.blogId)
         const updatedInput = {
-            ...input,
+            title: input.title,
+            shortDescription: input.shortDescription,
+            content: input.content,
+            blogId: input.blogId,
             blogName: blog?.name,
-            createdAt: (new Date()).toISOString(),
-            _id: new ObjectId()
+            createdAt: (new Date()).toISOString()
         }
         return await postRepository.create(updatedInput)
     },
@@ -28,21 +29,10 @@ export const postService = {
         if(!post) return false
         return await postRepository.delete(id)
     },
-    async postComment(postId: string, inputComment: CommentInputType, user: UserType_Id) {
+    async postComment(postId: string, input: CommentInputType, userId: string) {
         const post = await postRepository.find(postId)
         if(!post) return null
-
-        const updatedComment = {
-            _id: new ObjectId(),
-            postId: postId,
-            content: inputComment.content,
-            commentatorInfo: {
-                userId: user._id.toString(),
-                userLogin: user.login
-            },
-            createdAt: (new Date()).toISOString()
-        }
-        const insertedComment = await postRepository.postComment(updatedComment)
-        return insertedComment
+        const insertedCommentId = await commentService.createComment(postId, input, userId)
+        return insertedCommentId
     }
 }

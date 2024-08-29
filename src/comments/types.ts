@@ -1,5 +1,4 @@
-import { ObjectId } from "mongodb"
-export type CommentTypeId = {
+export type CommentViewType = {
     id: string,
     content: string,
     commentatorInfo: {
@@ -9,8 +8,7 @@ export type CommentTypeId = {
     createdAt: string
 }
 
-export type CommentType_Id = {
-    _id: ObjectId,
+export type CommentEntityType = {
     content: string,
     commentatorInfo: {
         userId: string,
