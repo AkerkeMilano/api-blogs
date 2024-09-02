@@ -21,5 +21,12 @@ export const authRepository = {
             {$set: {'emailConfirmation.isConfirmed': true} }
         )
         return result.modifiedCount === 1
+    },
+    async updateConfirmCode(id: ObjectId, code: string) {
+        const result = await userCollection.updateOne(
+            {_id: id},
+            {$set: {'emailConfirmation.confirmationCode': code} }
+        )
+        return result.modifiedCount === 1
     }
 }

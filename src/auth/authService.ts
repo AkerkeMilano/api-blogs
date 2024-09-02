@@ -127,10 +127,14 @@ export const authService = {
         const user = await authRepository.isUserExistByEmailOrLogin(email)
         if(!user) return null
         if(user.emailConfirmation.isConfirmed) return null
+
+        const newCode = randomUUID()
+
+        const result = await authRepository.updateConfirmCode(user._id, newCode)
         const regHTML = `
         <h1>Thank for your registration</h1>
         <p>To finish registration please follow the link below:
-            <a href='https://somesite.com/confirm-email?code=${user.emailConfirmation.confirmationCode}'>complete registration</a>
+            <a href='https://somesite.com/confirm-email?code=${newCode}'>complete registration</a>
         </p>
        `; 
 
@@ -139,6 +143,6 @@ export const authService = {
         } catch(e){
             console.log("email error ", e)
         }
-        return user
+        return result
     }
 }
