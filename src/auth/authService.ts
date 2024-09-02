@@ -138,8 +138,7 @@ export const authService = {
             await emailSender.sendEmail(email, "Welcome to our website", regHTML)
         } catch(e){
             console.log("email error ", e)
-            return null
         }
-        return !!user
+        return user
     }
 }
