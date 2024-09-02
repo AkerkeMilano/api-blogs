@@ -3,6 +3,16 @@ import { userCollection } from "../../db/mongo-db"
 import { UserPaginationType } from "../types"
 
 export const userQueryRepository = {
+    async getUserById(id: string) {
+        const user = await userCollection.findOne({_id: new ObjectId(id)})
+        if(!user) return null
+        return {
+            id: user._id.toString(),
+            login: user.login,
+            email: user.email,
+            createdAt: user.createdAt
+        }
+    },
     async getAllUsers(query: any): Promise<UserPaginationType> {
         const loginSearch = query.searchLoginTerm
             ? { login: {$regex: query.searchLoginTerm, $options: 'i'}}

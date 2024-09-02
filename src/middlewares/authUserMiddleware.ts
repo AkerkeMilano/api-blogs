@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 import { HTTP_STATUSES } from "../settings"
-import { jwtService } from "../login/jwt/jwtService"
+import { jwtService } from "../auth/jwt/jwtService"
 import { userRepository } from "../users/repository/userRepository"
 export const authUserMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const auth = req.headers.authorization
@@ -19,7 +19,7 @@ export const authUserMiddleware = async (req: Request, res: Response, next: Next
             //check userId in query repo
         const user = await userRepository.getById(userId)
         if(!user) throw Error()
-            
+
         req.userId = userId
         return next()
     }catch(e) {

@@ -6,12 +6,17 @@ export type InputUserType = {
     email: string
 }
 
-export type UserType_Id = {
-    _id: ObjectId,
+export type EmailConfirmType = {
+    confirmationCode: string,
+    expirationDate: Date,
+    isConfirmed: boolean
+}
+export type UserEntityType = {
     login: string,
     password: string,
     email: string,
-    createdAt: string
+    createdAt: string,
+    emailConfirmation: EmailConfirmType
 }
 
 export type UserTypeId = {

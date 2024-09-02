@@ -1,12 +1,13 @@
+import {randomUUID} from "crypto";
+import {add} from "date-fns";
+
 import { userRepository } from "../repository/userRepository";
 import { InputUserType, UserTypeId } from "../types";
 import { StatusCode } from "../../settings";
-import { ObjectId } from "mongodb";
-
 import { passportService } from "../../adapters/passwordService";
 
 type UserResult = {
-    data: UserTypeId | null,
+    userId: string | null,
     status: StatusCode,
     message: [
         {field: string, message: string}
@@ -18,33 +19,38 @@ export const userService = {
         const isUserExistByLogin = await userRepository.checkExistingUserByLogin(input.login)
         if(isUserExistByEmail) {
             return {
-                data: null,
+                userId: null,
                 status: StatusCode.BadRequest,
                 message: [{field: 'email', message: 'email should be unique'}]
                 }
         }
         if(isUserExistByLogin) {
             return {
-                data: null,
+                userId: null,
                 status: StatusCode.BadRequest,
                 message: [{field: 'login', message: 'login should be unique'}]
                 }
         }
 
         const newUser = {
-            ...input,
-            _id: new ObjectId(),
-            createdAt: (new Date()).toISOString()
+            login: input.login,
+            email: input.email,
+            password: await passportService.createHash(input.password),
+            createdAt: (new Date()).toISOString(),
+            emailConfirmation: {
+                confirmationCode: randomUUID(),
+                expirationDate: add(new Date(), {
+                    hours: 1,
+                    minutes: 30,
+                }),
+                isConfirmed: true
+            }
         }
         
-        const updatedUser = {
-            ...newUser,
-            password: await passportService.createHash(newUser.password)
-        }
+        const createdUserId = await userRepository.create(newUser)
 
-        const createdUser = await userRepository.create(updatedUser)
         return {
-            data: createdUser,
+            userId: createdUserId,
             status: StatusCode.Success,
             message: "User was created"
         }

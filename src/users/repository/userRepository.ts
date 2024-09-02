@@ -1,31 +1,25 @@
 import { ObjectId } from "mongodb"
 
-import { UserTypeId, UserType_Id } from "../types"
+import { UserEntityType } from "../types"
 import { userCollection } from "../../db/mongo-db"
 
 export const userRepository = {
     async getById(id: string) {
         return await userCollection.findOne({ _id: new ObjectId(id)})
     },
-    async create(input: UserType_Id): Promise<UserTypeId> {
+    async create(input: UserEntityType): Promise<string> {
         const insertedUser = await userCollection.insertOne(input)
-        const user = {
-            id: insertedUser.insertedId.toString(),
-            login: input.login,
-            email: input.email,
-            createdAt: input.createdAt
-        }
-        return user
+        return insertedUser.insertedId.toString()
     },
 
-    async checkExistingUserByEmail(email: string): Promise<UserType_Id | null> {
+    async checkExistingUserByEmail(email: string): Promise<boolean> {
         const user = await userCollection.findOne({ email: email})
-        return user
+        return !!user
     },
 
-    async checkExistingUserByLogin(login: string): Promise<UserType_Id | null> {
+    async checkExistingUserByLogin(login: string): Promise<boolean> {
         const user = await userCollection.findOne({ login: login})
-        return user
+        return !!user
     },
 
     async delete(id: string) {

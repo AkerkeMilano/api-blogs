@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { userService } from "./service/userService"
 import { HTTP_STATUSES } from "../settings"
 import { StatusCode } from "../settings"
+import { userQueryRepository } from "./repository/userQueryRepository"
 
 export const createUserController = async (req: Request, res: Response) => {
     const userInfo = await userService.registerUser(req.body)
@@ -11,5 +12,6 @@ export const createUserController = async (req: Request, res: Response) => {
         })
         return
     }
-    res.status(HTTP_STATUSES.CREATED_201).json(userInfo.data)
+    const userView = await userQueryRepository.getUserById(userInfo.userId!)
+    res.status(HTTP_STATUSES.CREATED_201).json(userView)
 }
