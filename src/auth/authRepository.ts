@@ -1,4 +1,3 @@
-    import { LoginEmailType } from "./types"
 import { userCollection } from "../db/mongo-db";
 import { ObjectId } from "mongodb";
 
@@ -56,6 +55,16 @@ export const authRepository = {
             return false
        }
        return true
+    },
+    async updateRefreshToken(id: string, prevToken: string, newToken: string) {
+        const res = await userCollection.updateOne(
+            {_id: new ObjectId(id) },
+            {
+            $set: { currToken: newToken },
+            $push: { tokenBlackList: prevToken }
+            }
+        )
+        return res.modifiedCount === 1
     },
     async removeToken(id: string , token: string) {
         const res = await userCollection.updateOne(

@@ -155,8 +155,8 @@ export const authService = {
         const token = await jwtService.createJWT(userId, '10s')
         const refreshToken = await jwtService.createJWT(userId, '20s')
 
-        await authRepository.addTokenToBlackList(userId, prevToken)
-        await authRepository.saveRefreshToken(userId, refreshToken)
+        await authRepository.updateRefreshToken(userId, prevToken, refreshToken)
+
         return {
             token,
             refreshToken
@@ -168,6 +168,7 @@ export const authService = {
         if(!userId) return null
         const isTokenValid = await authRepository.isRefreshTokenValid(userId, prevToken)
         if(!isTokenValid) return null
+    
         const res = await authRepository.removeToken(userId, prevToken)
         return res
     },
