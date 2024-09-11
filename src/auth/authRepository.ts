@@ -32,6 +32,7 @@ export const authRepository = {
     },
     async isRefreshTokenValid(userId: string, refreshToken: string) {
         const user = await userCollection.findOne({ _id: new ObjectId(userId)})
+        if(user?.tokenBlackList.includes(refreshToken)) return false
         return user?.currToken === refreshToken
     },
 
