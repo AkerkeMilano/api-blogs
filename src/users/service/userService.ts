@@ -44,7 +44,9 @@ export const userService = {
                     minutes: 30,
                 }),
                 isConfirmed: true
-            }
+            },
+            currToken: '',
+            tokenBlackList: []
         }
         
         const createdUserId = await userRepository.create(newUser)

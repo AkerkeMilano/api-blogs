@@ -16,7 +16,9 @@ export type UserEntityType = {
     password: string,
     email: string,
     createdAt: string,
-    emailConfirmation: EmailConfirmType
+    emailConfirmation: EmailConfirmType,
+    currToken: string,
+    tokenBlackList: string[]
 }
 
 export type UserTypeId = {

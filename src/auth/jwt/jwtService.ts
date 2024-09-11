@@ -3,8 +3,8 @@ import { SETTINGS } from "../../settings"
 import { ObjectId } from 'mongodb'
 
 export const jwtService = {
-    async createJWT(userId: ObjectId){
-        const token = jwt.sign({ userId: userId}, SETTINGS.JWT_SECRET_KEY, {expiresIn: '1h'})
+    async createJWT(userId: ObjectId, expiresIn: string){
+        const token = jwt.sign({ userId: userId}, SETTINGS.JWT_SECRET_KEY, {expiresIn: expiresIn})
         return token
     },
 

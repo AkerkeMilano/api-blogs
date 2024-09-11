@@ -9,8 +9,11 @@ import { jwtService } from "./jwt/jwtService"
 import { InputUserType } from "../users/types";
 import { userRepository } from "../users/repository/userRepository"
 import { emailSender } from "../adapters/emailSender";
+import { ObjectId } from "mongodb";
+
 type UserResult = {
     token: string | null,
+    refreshToken: string | null,
     userId: string | null,
     status: StatusCode,
     message: [
@@ -22,9 +25,11 @@ type UserResult = {
 export const authService = {
     async loginUser(input: LoginEmailType): Promise<UserResult> {
         const user = await authRepository.isUserExistByEmailOrLogin(input.loginOrEmail)
+        console.log("user", user)
         if(!user) {
             return {
                 token: null,
+                refreshToken: null,
                 userId: null,
                 status: StatusCode.Unauthtorized,
                 message: "User is not found"
@@ -34,6 +39,7 @@ export const authService = {
         if(!user.emailConfirmation.isConfirmed){
             return {
                 token: null,
+                refreshToken: null,
                 userId: null,
                 status: StatusCode.Unauthtorized,
                 message: "User is not found"
@@ -44,16 +50,20 @@ export const authService = {
         if(!isPasswordValid) {
             return {
                 token: null,
+                refreshToken: null,
                 userId: null,
                 status: StatusCode.Unauthtorized,
                 message: "Invalid password"
             }
         }
 
-        const token = await jwtService.createJWT(user._id)
+        const token = await jwtService.createJWT(user._id, '10s')
+        const refreshToken = await jwtService.createJWT(user._id, '20s')
+        await userRepository.saveRefreshToken(user._id, refreshToken)
 
         return {
             token: token,
+            refreshToken: refreshToken,
             userId: null,
             status: StatusCode.NoContent,
             message: "User is logged in"
@@ -65,6 +75,7 @@ export const authService = {
         if(isUserExistByEmail) {
             return {
                 token: null,
+                refreshToken: null,
                 userId: null,
                 status: StatusCode.BadRequest,
                 message: [{field: 'email', message: 'email should be unique'}]
@@ -73,6 +84,7 @@ export const authService = {
         if(isUserExistByLogin) {
             return {
                 token: null,
+                refreshToken: null,
                 userId: null,
                 status: StatusCode.BadRequest,
                 message: [{field: 'login', message: 'login should be unique'}]
@@ -91,26 +103,19 @@ export const authService = {
                     minutes: 30,
                 }),
                 isConfirmed: false
-            }
+            },
+            currToken: '',
+            tokenBlackList: []
         }
-
-        const regHTML = `
-        <h1>Thank for your registration</h1>
-        <p>To finish registration please follow the link below:
-            <a href='https://somesite.com/confirm-email?code=${newUser.emailConfirmation.confirmationCode}'>complete registration</a>
-        </p>
-       `; 
 
         const createdUserId = await userRepository.create(newUser)
-        try {
-            await emailSender.sendEmail(input.email, "Welcome to our website", regHTML)
-        } catch(e){
-            console.log("email error ", e)
-        }
-   
+
+        emailSender.sendEmail(newUser.email, newUser.emailConfirmation.confirmationCode).catch((e) => { throw new Error('Email send error')})
+        
         return {
             userId: createdUserId,
             token: null,
+            refreshToken: null,
             status: StatusCode.Success,
             message: "User was created"
         }
@@ -129,20 +134,38 @@ export const authService = {
         if(user.emailConfirmation.isConfirmed) return null
 
         const newCode = randomUUID()
+        const newDate = add(new Date(), {
+            hours: 1,
+            minutes: 30,
+        })
 
-        const result = await authRepository.updateConfirmCode(user._id, newCode)
-        const regHTML = `
-        <h1>Thank for your registration</h1>
-        <p>To finish registration please follow the link below:
-            <a href='https://somesite.com/confirm-email?code=${newCode}'>complete registration</a>
-        </p>
-       `; 
+        const result = await authRepository.updateConfirmCode(user._id, newCode, newDate)
 
-        try {
-            await emailSender.sendEmail(email, "Welcome to our website", regHTML)
-        } catch(e){
-            console.log("email error ", e)
-        }
+        emailSender.sendEmail(email, newCode).catch((e) => { console.log("Email send error", e)})
+
         return result
+    },
+
+    async refreshToken(prevToken: string) {
+        const userId = await jwtService.getUserIdByToken(prevToken) 
+        if(!userId) return null
+
+        const token = await jwtService.createJWT(userId, '10s')
+        const refreshToken = await jwtService.createJWT(userId, '20s')
+
+        await userRepository.addTokenToBlackList(userId, prevToken)
+        await userRepository.saveRefreshToken(userId, refreshToken)
+        return {
+            token,
+            refreshToken
+        }
+    },
+
+    async removeToken(prevToken: string) {
+        const userId = await jwtService.getUserIdByToken(prevToken) 
+        if(!userId) return null
+
+        const res = await authRepository.removeToken(userId, prevToken)
+        return res
     }
 }

@@ -13,6 +13,7 @@ export let postCollection: Collection<PostEntityType> = {} as Collection<PostEnt
 export let userCollection: Collection<UserEntityType> = {} as Collection<UserEntityType>
 export let commentCollection: Collection<CommentEntityType> = {} as Collection<CommentEntityType>
 
+
 export const connectToDB = async (MONGO_URL: string) => {
     try {
         client = new MongoClient(MONGO_URL)
@@ -21,6 +22,7 @@ export const connectToDB = async (MONGO_URL: string) => {
         postCollection = db.collection<PostEntityType>(SETTINGS.POST_COLLECTION_NAME)
         userCollection = db.collection<UserEntityType>(SETTINGS.USER_COLLECTION_NAME)
         commentCollection = db.collection<CommentEntityType>(SETTINGS.COMMENT_COLLECTION_NAME)
+
         await client.connect()
         console.log("Connected to DB!")
         
