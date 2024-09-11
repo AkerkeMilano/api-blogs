@@ -81,5 +81,10 @@ export const logout = async (req: Request, res: Response) => {
         res.status(HTTP_STATUSES.UNAUTHORIZED_401).json("Login again")
         return
     }
+    res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: true
+      });
+
     res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
 }
