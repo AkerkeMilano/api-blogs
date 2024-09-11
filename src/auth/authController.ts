@@ -76,7 +76,7 @@ export const genRefreshToken = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
     const prevToken= req.cookies.refreshToken
-    const result = await await authService.removeToken(prevToken)
+    const result = await authService.removeToken(prevToken)
     if(!result){
         res.status(HTTP_STATUSES.UNAUTHORIZED_401).json("Login again")
         return

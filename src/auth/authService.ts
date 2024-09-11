@@ -166,7 +166,8 @@ export const authService = {
     async removeToken(prevToken: string) {
         const userId = await jwtService.getUserIdByToken(prevToken) 
         if(!userId) return null
-
+        const isTokenValid = await authRepository.isRefreshTokenValid(userId, prevToken)
+        if(!isTokenValid) return null
         const res = await authRepository.removeToken(userId, prevToken)
         return res
     },
