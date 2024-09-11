@@ -59,7 +59,7 @@ export const authService = {
 
         const token = await jwtService.createJWT(user._id, '10s')
         const refreshToken = await jwtService.createJWT(user._id, '20s')
-        await userRepository.saveRefreshToken(user._id, refreshToken)
+        await authRepository.saveRefreshToken(user._id, refreshToken)
 
         return {
             token: token,
@@ -149,12 +149,14 @@ export const authService = {
     async refreshToken(prevToken: string) {
         const userId = await jwtService.getUserIdByToken(prevToken) 
         if(!userId) return null
+        const isTokenValid = await authRepository.isRefreshTokenValid(userId, prevToken)
+        if(!isTokenValid) return null
 
         const token = await jwtService.createJWT(userId, '10s')
         const refreshToken = await jwtService.createJWT(userId, '20s')
 
-        await userRepository.addTokenToBlackList(userId, prevToken)
-        await userRepository.saveRefreshToken(userId, refreshToken)
+        await authRepository.addTokenToBlackList(userId, prevToken)
+        await authRepository.saveRefreshToken(userId, refreshToken)
         return {
             token,
             refreshToken
@@ -167,5 +169,15 @@ export const authService = {
 
         const res = await authRepository.removeToken(userId, prevToken)
         return res
+    },
+
+    async getUserInfo(userId: string) {
+        const user = await authRepository.getById(userId)
+        if(!user) return null
+        return {
+            email: user?.email,
+            login: user?.login,
+            userId: userId
+        }
     }
 }

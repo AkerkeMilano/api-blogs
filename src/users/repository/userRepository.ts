@@ -25,27 +25,5 @@ export const userRepository = {
     async delete(id: string) {
         const removedUser = await userCollection.deleteOne({ _id: new ObjectId(id)})
         return removedUser.acknowledged
-    },
-
-    async saveRefreshToken(id: ObjectId, token: string) {
-        const user = await userCollection.updateOne(
-            {_id: id},
-            {$set: { currToken: token }}
-        )
-        if(user.matchedCount === 0) {
-             return false
-        }
-        return true
-    },
-
-    async addTokenToBlackList(id: string, token: string) {
-        const user = await userCollection.updateOne(
-            {_id: new ObjectId(id)},
-            {$push: { tokenBlackList: token }}
-        )
-        if(user.matchedCount === 0) {
-            return false
-       }
-       return true
     }
 }

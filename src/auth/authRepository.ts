@@ -3,9 +3,10 @@ import { userCollection } from "../db/mongo-db";
 import { ObjectId } from "mongodb";
 
 export const authRepository = {
-    // async login(input: LoginEmailType) {
-        
-    // },
+    async getById(id: string) {
+        const user = await userCollection.findOne({ _id: new ObjectId(id)})
+        return user
+    },
 
     async isUserExistByEmailOrLogin(emailOrLogin: string) {
         const user = await userCollection.findOne({$or: [{'email': emailOrLogin}, {'login': emailOrLogin}]})
@@ -28,6 +29,32 @@ export const authRepository = {
             {$set: {'emailConfirmation.confirmationCode': code, 'emailConfirmation.expirationDate': dt}}
         )
         return result.modifiedCount === 1
+    },
+    async isRefreshTokenValid(userId: string, refreshToken: string) {
+        const user = await userCollection.findOne({ _id: new ObjectId(userId)})
+        return user?.currToken === refreshToken
+    },
+
+    async saveRefreshToken(id: ObjectId, token: string) {
+        const user = await userCollection.updateOne(
+            {_id: id},
+            {$set: { currToken: token }}
+        )
+        if(user.matchedCount === 0) {
+             return false
+        }
+        return true
+    },
+
+    async addTokenToBlackList(id: string, token: string) {
+        const user = await userCollection.updateOne(
+            {_id: new ObjectId(id)},
+            {$push: { tokenBlackList: token }}
+        )
+        if(user.matchedCount === 0) {
+            return false
+       }
+       return true
     },
     async removeToken(id: string , token: string) {
         const res = await userCollection.updateOne(

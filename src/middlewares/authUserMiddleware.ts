@@ -4,8 +4,6 @@ import { jwtService } from "../auth/jwt/jwtService"
 import { userRepository } from "../users/repository/userRepository"
 export const authUserMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const auth = req.headers.authorization
-    console.log("auth-------", auth)
-
     if(!auth){
         res
             .status(HTTP_STATUSES.UNAUTHORIZED_401)

@@ -2,8 +2,16 @@ import { Request, Response } from "express"
 import { authService } from "./authService"
 import { StatusCode } from "../settings"
 import { HTTP_STATUSES } from "../settings"
-import { jwtService } from "./jwt/jwtService"
 
+
+export const getUserInfo = async (req: Request, res: Response) => {
+    const userInfo = await authService.getUserInfo(req.userId)
+    if(!userInfo) {
+        res.status(HTTP_STATUSES.UNAUTHORIZED_401).json("Wrong access token")
+        return
+    }
+    res.status(HTTP_STATUSES.OK_200).json(userInfo)
+}
 export const loginUser = async (req: Request, res: Response) => {
     const userInfo = await authService.loginUser(req.body)
     if(userInfo.status === StatusCode.Unauthtorized) {
