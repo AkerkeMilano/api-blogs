@@ -4,7 +4,7 @@ import { loginInputValidators } from "../middlewares/userValidator";
 import { userInputValidators } from "../middlewares/userValidator";
 import { emailCodeInputValidators, emailInputValidators } from "../middlewares/emailCodeValidators";
 import { inputCheckErrorsMiddleware } from "../middlewares/blogValidator";
-import { authMiddleware } from "../middlewares/authBlogMiddleware";
+import { authUserMiddleware } from './../middlewares/authUserMiddleware';
 export const authRouter = Router()
 
 authRouter.post('/login', loginInputValidators, inputCheckErrorsMiddleware, loginUser)
@@ -13,4 +13,4 @@ authRouter.post('/registration', userInputValidators, inputCheckErrorsMiddleware
 authRouter.post('/registration-confirmation', emailCodeInputValidators, inputCheckErrorsMiddleware, confirmEmail)
 authRouter.post('/registration-email-resending', emailInputValidators, inputCheckErrorsMiddleware, resendConfirmationCode)
 authRouter.post('/logout', logout)
-authRouter.get('/me', authMiddleware, getUserInfo)
+authRouter.get('/me', authUserMiddleware, getUserInfo)
