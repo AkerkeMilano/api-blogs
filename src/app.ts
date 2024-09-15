@@ -8,6 +8,7 @@ import { userRouter } from './users'
 import { authRouter } from './auth'
 import { commentRouter } from './comments'
 import { securityDevicesRouter } from './security'
+import { requestCountLimiter } from './middlewares/requestCountMiddleware'
 
 //test
 export const app = express()
@@ -19,6 +20,8 @@ app.get('/', (req, res) => {
 })
 
 app.use(cookieParser())
+app.use(requestCountLimiter)
+
 app.use(SETTINGS.PATH.BLOGS, blogsRouter)
 app.use(SETTINGS.PATH.POSTS, postsRouter)
 app.use(SETTINGS.PATH.TESTING, testingRouter)
