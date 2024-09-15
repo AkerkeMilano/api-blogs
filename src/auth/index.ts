@@ -8,10 +8,10 @@ import { authUserMiddleware } from './../middlewares/authUserMiddleware';
 import { requestCountLimiter } from "../middlewares/requestCountMiddleware";
 export const authRouter = Router()
 
-authRouter.post('/login', loginInputValidators, inputCheckErrorsMiddleware, loginUser)
-authRouter.post('/refresh-token', requestCountLimiter, genRefreshToken)
-authRouter.post('/registration', userInputValidators, inputCheckErrorsMiddleware, registerUser)
-authRouter.post('/registration-confirmation', emailCodeInputValidators, inputCheckErrorsMiddleware, confirmEmail)
-authRouter.post('/registration-email-resending', emailInputValidators, inputCheckErrorsMiddleware, resendConfirmationCode)
+authRouter.post('/login', requestCountLimiter, loginInputValidators, inputCheckErrorsMiddleware, loginUser)
+authRouter.post('/refresh-token', requestCountLimiter, requestCountLimiter, genRefreshToken)
+authRouter.post('/registration', requestCountLimiter, userInputValidators, inputCheckErrorsMiddleware, registerUser)
+authRouter.post('/registration-confirmation', requestCountLimiter, emailCodeInputValidators, inputCheckErrorsMiddleware, confirmEmail)
+authRouter.post('/registration-email-resending', requestCountLimiter, emailInputValidators, inputCheckErrorsMiddleware, resendConfirmationCode)
 authRouter.post('/logout', requestCountLimiter, logout)
-authRouter.get('/me', authUserMiddleware, requestCountLimiter, getUserInfo)
+authRouter.get('/me', requestCountLimiter, authUserMiddleware, getUserInfo)
