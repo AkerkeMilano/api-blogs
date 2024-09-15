@@ -5,6 +5,7 @@ import { PostEntityType } from '../posts/types'
 import { UserEntityType } from '../users/types'
 import { CommentEntityType } from '../comments/types'
 import { DeviceSessionsType } from '../auth/types'
+import { ApiEntityType } from '../api/types'
 
 let client: MongoClient = {} as MongoClient
 export let db: Db = {} as Db
@@ -14,6 +15,7 @@ export let postCollection: Collection<PostEntityType> = {} as Collection<PostEnt
 export let userCollection: Collection<UserEntityType> = {} as Collection<UserEntityType>
 export let commentCollection: Collection<CommentEntityType> = {} as Collection<CommentEntityType>
 export let deviceCollection: Collection<DeviceSessionsType> = {} as Collection<DeviceSessionsType> 
+export let apiCollection: Collection<ApiEntityType> = {} as Collection<ApiEntityType>
 
 
 export const connectToDB = async (MONGO_URL: string) => {
@@ -25,6 +27,8 @@ export const connectToDB = async (MONGO_URL: string) => {
         userCollection = db.collection<UserEntityType>(SETTINGS.USER_COLLECTION_NAME)
         commentCollection = db.collection<CommentEntityType>(SETTINGS.COMMENT_COLLECTION_NAME)
         deviceCollection = db.collection<DeviceSessionsType>(SETTINGS.DEVICE_COLLECTION_NAME)
+        apiCollection = db.collection<ApiEntityType>(SETTINGS.API_COLLECTION_NAME)
+
 
         await client.connect()
         console.log("Connected to DB!")

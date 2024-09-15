@@ -19,6 +19,7 @@ export const SETTINGS = {
     USER_COLLECTION_NAME: process.env.USER_COLLECTION_NAME || '',
     COMMENT_COLLECTION_NAME: process.env.COMMENT_COLLECTION_NAME || '',
     DEVICE_COLLECTION_NAME: process.env.DEVICE_COLLECTION_NAME || '',
+    API_COLLECTION_NAME: process.env.API_COLLECTION_NAME || '',
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY ||'login123'
 }
 
