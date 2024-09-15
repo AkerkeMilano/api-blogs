@@ -9,7 +9,8 @@ import { jwtService } from "./jwt/jwtService"
 import { InputUserType } from "../users/types";
 import { userRepository } from "../users/repository/userRepository"
 import { emailSender } from "../adapters/emailSender";
-import { ObjectId } from "mongodb";
+import { v4 as uuidv4 } from 'uuid';
+import { authQueryRepository } from "./authQueryRepository";
 
 type UserResult = {
     token: string | null,
@@ -23,9 +24,9 @@ type UserResult = {
 
 
 export const authService = {
-    async loginUser(input: LoginEmailType): Promise<UserResult> {
+    async loginUser(input: LoginEmailType, deviceName: string | undefined, ip: string | undefined): Promise<UserResult> {
         const user = await authRepository.isUserExistByEmailOrLogin(input.loginOrEmail)
-        console.log("user", user)
+
         if(!user) {
             return {
                 token: null,
@@ -57,9 +58,22 @@ export const authService = {
             }
         }
 
-        const token = await jwtService.createJWT(user._id, '10s')
-        const refreshToken = await jwtService.createJWT(user._id, '20s')
-        await authRepository.saveRefreshToken(user._id, refreshToken)
+        const deviceId = uuidv4();
+
+        const token = await jwtService.createJWT({userId: user._id}, '60s')
+        const refreshToken = await jwtService.createJWT({ userId: user._id, deviceId: deviceId}, '5m')
+        const { issuedAt, expiresAt } = await jwtService.getIssuedExpDate(refreshToken)
+
+        const deviceAuthToken = {
+            userId: user._id.toString(),
+            deviceId: deviceId,
+            deviceName: deviceName,
+            iat: issuedAt,
+            ip: ip,
+            exp: expiresAt
+        }
+        const insertedId = await authRepository.saveDeviceAuthToken(deviceAuthToken)
+        //await authRepository.saveRefreshToken(user._id, refreshToken)
 
         return {
             token: token,
@@ -147,15 +161,20 @@ export const authService = {
     },
 
     async refreshToken(prevToken: string) {
-        const userId = await jwtService.getUserIdByToken(prevToken) 
+        const {deviceId, userId} = await jwtService.getPayloadByToken(prevToken) 
+        const { issuedAt, expiresAt } = await jwtService.getIssuedExpDate(prevToken)
         if(!userId) return null
-        const isTokenValid = await authRepository.isRefreshTokenValid(userId, prevToken)
+        const isTokenValid = await jwtService.isTokenNotExpired(prevToken)
         if(!isTokenValid) return null
 
-        const token = await jwtService.createJWT(userId, '10s')
-        const refreshToken = await jwtService.createJWT(userId, '20s')
+        const device = await authQueryRepository.getDeviceById(deviceId)
+        if(device!.iat !== issuedAt) return null
 
-        await authRepository.updateRefreshToken(userId, prevToken, refreshToken)
+        const token = await jwtService.createJWT({ userId: userId} , '60s')
+        const refreshToken = await jwtService.createJWT({ userId: userId, deviceId: deviceId}, '5m')
+        const updatedTime = await jwtService.getIssuedExpDate(refreshToken)
+
+        await authRepository.updateRefreshToken(device!._id, updatedTime.issuedAt)
 
         return {
             token,

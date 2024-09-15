@@ -8,6 +8,7 @@ export const SETTINGS = {
         POSTS: '/posts',
         USERS: '/users',
         AUTH: '/auth',
+        SECURITY: '/security',
         COMMENTS: '/comments',
         TESTING: '/testing/all-data'
     },
@@ -17,6 +18,7 @@ export const SETTINGS = {
     POST_COLLECTION_NAME: process.env.POST_COLLECTION_NAME || '',
     USER_COLLECTION_NAME: process.env.USER_COLLECTION_NAME || '',
     COMMENT_COLLECTION_NAME: process.env.COMMENT_COLLECTION_NAME || '',
+    DEVICE_COLLECTION_NAME: process.env.DEVICE_COLLECTION_NAME || '',
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY ||'login123'
 }
 

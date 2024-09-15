@@ -13,7 +13,9 @@ export const getUserInfo = async (req: Request, res: Response) => {
     res.status(HTTP_STATUSES.OK_200).json(userInfo)
 }
 export const loginUser = async (req: Request, res: Response) => {
-    const userInfo = await authService.loginUser(req.body)
+    const deviceName = req.headers['user-agent'];
+    const ip = req.ip;
+    const userInfo = await authService.loginUser(req.body, deviceName, ip)
     if(userInfo.status === StatusCode.Unauthtorized) {
         res.status(HTTP_STATUSES.UNAUTHORIZED_401).json("Wrong password or login")
         return

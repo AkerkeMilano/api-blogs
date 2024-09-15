@@ -1,4 +1,5 @@
-import { userCollection } from "../db/mongo-db";
+import { deviceCollection, userCollection } from "../db/mongo-db";
+import { DeviceSessionsType } from "./types";
 import { ObjectId } from "mongodb";
 
 export const authRepository = {
@@ -45,25 +46,20 @@ export const authRepository = {
         }
         return true
     },
-
-    async addTokenToBlackList(id: string, token: string) {
-        const user = await userCollection.updateOne(
-            {_id: new ObjectId(id)},
-            {$push: { tokenBlackList: token }}
-        )
-        if(user.matchedCount === 0) {
-            return false
-       }
-       return true
-    },
-    async updateRefreshToken(id: string, prevToken: string, newToken: string) {
-        const res = await userCollection.updateOne(
-            {_id: new ObjectId(id) },
+    async updateRefreshToken(id: ObjectId, iat: string | null) {
+        const res = await deviceCollection.updateOne(
+            {_id: id },
             {
-            $set: { currToken: newToken },
-            $push: { tokenBlackList: prevToken }
+            $set: { iat: iat }
             }
         )
+        // const res = await userCollection.updateOne(
+        //     {_id: new ObjectId(id) },
+        //     {
+        //     $set: { currToken: newToken },
+        //     $push: { tokenBlackList: prevToken }
+        //     }
+        // )
         return res.modifiedCount === 1
     },
     async removeToken(id: string , token: string) {
@@ -75,5 +71,9 @@ export const authRepository = {
             }
         )
         return res.modifiedCount === 1
+    },
+    async saveDeviceAuthToken(dto: DeviceSessionsType) {
+        const insertedDevice = await deviceCollection.insertOne(dto)
+        return insertedDevice.insertedId.toString()
     }
 }
