@@ -1,4 +1,4 @@
-import { blogCollection, postCollection, userCollection, commentCollection, deviceCollection } from "../db/mongo-db"
+import { blogCollection, postCollection, userCollection, commentCollection, deviceCollection, apiCollection } from "../db/mongo-db"
 
 export const deleteTestingRepository = {
     deleteAll() {
@@ -7,5 +7,6 @@ export const deleteTestingRepository = {
         userCollection.deleteMany()
         commentCollection.deleteMany()
         deviceCollection.deleteMany()
+        apiCollection.deleteMany()
     }
 }
