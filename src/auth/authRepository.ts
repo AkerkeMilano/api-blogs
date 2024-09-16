@@ -30,12 +30,6 @@ export const authRepository = {
         )
         return result.modifiedCount === 1
     },
-    async isRefreshTokenValid(userId: string, refreshToken: string) {
-        const user = await userCollection.findOne({ _id: new ObjectId(userId)})
-        if(user?.tokenBlackList.includes(refreshToken)) return false
-        return user?.currToken === refreshToken
-    },
-
     async saveRefreshToken(id: ObjectId, token: string) {
         const user = await userCollection.updateOne(
             {_id: id},
@@ -46,11 +40,14 @@ export const authRepository = {
         }
         return true
     },
-    async updateRefreshToken(id: ObjectId, iat: string | null) {
+    async updateRefreshToken(id: ObjectId, iat: string | null, exp: string | null) {
         const res = await deviceCollection.updateOne(
             {_id: id },
             {
-            $set: { iat: iat }
+            $set: { 
+                iat: iat,
+                exp: exp 
+            }
             }
         )
         // const res = await userCollection.updateOne(
