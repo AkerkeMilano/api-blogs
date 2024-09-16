@@ -7,7 +7,7 @@ export const apiService = {
     },
     async getApiCounts(dto: ApiEntityType, limit: Date){
         const requestCount = await apiRepository.getApiCount(dto, limit)
-        if(requestCount >= 5){
+        if(requestCount > 4){
             return null
         }
         console.log("req count", requestCount);
