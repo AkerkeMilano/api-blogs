@@ -9,7 +9,7 @@ import { requestCountLimiter } from "../middlewares/requestCountMiddleware";
 export const authRouter = Router()
 
 authRouter.post('/login', requestCountLimiter, loginInputValidators, inputCheckErrorsMiddleware, loginUser)
-authRouter.post('/refresh-token', requestCountLimiter, requestCountLimiter, genRefreshToken)
+authRouter.post('/refresh-token', requestCountLimiter, genRefreshToken)
 authRouter.post('/registration', requestCountLimiter, userInputValidators, inputCheckErrorsMiddleware, registerUser)
 authRouter.post('/registration-confirmation', requestCountLimiter, emailCodeInputValidators, inputCheckErrorsMiddleware, confirmEmail)
 authRouter.post('/registration-email-resending', requestCountLimiter, emailInputValidators, inputCheckErrorsMiddleware, resendConfirmationCode)

@@ -11,11 +11,12 @@ export const apiRepository = {
         return addedApi.insertedId.toString()
     },
     async getApiCount(dto: ApiEntityType, limitSec: Date) {
-        const selectedApis = await apiCollection.find({
-            api: dto.ip,
+        const requestCount = await apiCollection.countDocuments({
+            ip: dto.ip,
             url: dto.url,
             date: { $gte: limitSec}
-        }).toArray()
-        return selectedApis.length
+          });
+
+        return requestCount
     }
 }

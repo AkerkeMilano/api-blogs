@@ -10,6 +10,7 @@ export const apiService = {
         if(requestCount >= 5){
             return null
         }
+        console.log("req count", requestCount);
         return true
     }
 }
