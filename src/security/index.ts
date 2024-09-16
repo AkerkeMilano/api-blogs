@@ -5,4 +5,4 @@ export const securityDevicesRouter = Router()
 
 securityDevicesRouter.get('/devices', getAllDevices)
 securityDevicesRouter.delete('/devices', deleteAllDevices)
-securityDevicesRouter.delete('/devices/:id', deleteDeviceById)
+securityDevicesRouter.delete('/devices/:deviceId', deleteDeviceById)

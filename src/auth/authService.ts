@@ -190,6 +190,8 @@ export const authService = {
         if(!isTokenNotExpired) return null
 
         const { deviceId, userId } = await jwtService.getPayloadByToken(prevToken) 
+        const device = await securityDevicesRepository.getDeviceById(deviceId)
+        if(!device) return null
         if(!userId) return null
     
         const res = await securityDevicesRepository.deleteDeviceById(deviceId)

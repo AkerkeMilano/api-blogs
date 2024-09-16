@@ -24,7 +24,7 @@ export const deleteAllDevices = async (req: Request, res: Response) => {
 
 export const deleteDeviceById = async (req: Request, res: Response) => {
     const prevCookie= req.cookies.refreshToken
-    const delResult = await securityDevicesService.deleteDeviceById(prevCookie, req.params.id)
+    const delResult = await securityDevicesService.deleteDeviceById(prevCookie, req.params.deviceId)
     if(delResult === StatusCode.Unauthtorized){
         res.status(HTTP_STATUSES.UNAUTHORIZED_401).json("Login again")
         return
