@@ -62,16 +62,6 @@ export const authRepository = {
         // )
         return res.modifiedCount === 1
     },
-    async removeToken(id: string , token: string) {
-        const res = await userCollection.updateOne(
-            {_id: new ObjectId(id) },
-            {
-            $set: { currToken: '' },
-            $push: { tokenBlackList: token }
-            }
-        )
-        return res.modifiedCount === 1
-    },
     async saveDeviceAuthToken(dto: DeviceSessionsType) {
         const insertedDevice = await deviceCollection.insertOne(dto)
         return insertedDevice.insertedId.toString()

@@ -11,6 +11,7 @@ import { userRepository } from "../users/repository/userRepository"
 import { emailSender } from "../adapters/emailSender";
 import { v4 as uuidv4 } from 'uuid';
 import { authQueryRepository } from "./authQueryRepository";
+import { securityDevicesRepository } from './../security/repository/securityDevicesRepository';
 
 type UserResult = {
     token: string | null,
@@ -183,12 +184,12 @@ export const authService = {
     },
 
     async removeToken(prevToken: string) {
-        const userId = await jwtService.getUserIdByToken(prevToken) 
+        const { deviceId, userId } = await jwtService.getPayloadByToken(prevToken) 
         if(!userId) return null
         const isTokenValid = await authRepository.isRefreshTokenValid(userId, prevToken)
         if(!isTokenValid) return null
     
-        const res = await authRepository.removeToken(userId, prevToken)
+        const res = await securityDevicesRepository.deleteDeviceById(deviceId)
         return res
     },
 
