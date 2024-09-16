@@ -5,7 +5,7 @@ import { apiService } from "../api/apiService";
 export const requestCountLimiter = async (req: Request, res: Response, next: NextFunction) => {
     const ip = (typeof req.ip === 'string' && req.ip) ||
     (Array.isArray(req.headers['x-forwarded-for']) ? req.headers['x-forwarded-for'][0] : req.headers['x-forwarded-for']) || 'unknown'
-    const url = req.baseUrl || req.originalUrl;
+    const url = req.originalUrl;
     const now = new Date();
     const tenSecondsAgo = new Date(now.getTime() - 10000);
 
