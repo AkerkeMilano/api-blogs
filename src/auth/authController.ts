@@ -62,8 +62,9 @@ export const resendConfirmationCode = async(req: Request, res: Response) => {
 
 export const genRefreshToken = async (req: Request, res: Response) => {
     const prevCookie= req.cookies.refreshToken
+    const deviceId = req.deviceId
    
-    const tokens = await authService.refreshToken(prevCookie)
+    const tokens = await authService.refreshToken(prevCookie, deviceId)
     if(!tokens){
         res.status(HTTP_STATUSES.UNAUTHORIZED_401).json("Login again")
         return
@@ -78,7 +79,9 @@ export const genRefreshToken = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
     const prevToken= req.cookies.refreshToken
-    const result = await authService.removeToken(prevToken)
+    const deviceId = req.deviceId
+
+    const result = await authService.removeToken(prevToken, deviceId)
     if(!result){
         res.status(HTTP_STATUSES.UNAUTHORIZED_401).json("Login again")
         return

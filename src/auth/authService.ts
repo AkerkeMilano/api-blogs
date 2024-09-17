@@ -161,20 +161,12 @@ export const authService = {
         return result
     },
 
-    async refreshToken(prevToken: string) {
-        const isTokenValid = await jwtService.isTokenNotExpired(prevToken)
-        if(!isTokenValid) return null
-
-        const {deviceId, userId} = await jwtService.getPayloadByToken(prevToken) 
-        const { issuedAt, expiresAt } = await jwtService.getIssuedExpDate(prevToken)
-        if(!userId) return null
+    async refreshToken(prevToken: string, deviceId: string) {
    
         const device = await authQueryRepository.getDeviceById(deviceId)
-        if(!device) return null
-        if(device!.iat !== issuedAt) return null
 
-        const token = await jwtService.createJWT({ userId: userId} , '60s')
-        const refreshToken = await jwtService.createJWT({ userId: userId, deviceId: deviceId}, '5m')
+        const token = await jwtService.createJWT({ userId: device?.userId} , '60s')
+        const refreshToken = await jwtService.createJWT({ userId: device?.userId, deviceId: deviceId}, '5m')
         const updatedTime = await jwtService.getIssuedExpDate(refreshToken)
 
         await authRepository.updateRefreshToken(device!._id, updatedTime.issuedAt, updatedTime.expiresAt)
@@ -185,16 +177,7 @@ export const authService = {
         }
     },
 
-    async removeToken(prevToken: string) {
-        const isTokenNotExpired = await jwtService.isTokenNotExpired(prevToken)
-        if(!isTokenNotExpired) return null
-
-        const { deviceId, userId } = await jwtService.getPayloadByToken(prevToken) 
-        const { issuedAt, expiresAt } = await jwtService.getIssuedExpDate(prevToken)
-        const device = await securityDevicesRepository.getDeviceById(deviceId)
-        if(!device) return null
-        if(!userId) return null
-        if(device!.iat !== issuedAt) return null
+    async removeToken(prevToken: string, deviceId: string) {
         const res = await securityDevicesRepository.deleteDeviceById(deviceId)
         return res
     },
